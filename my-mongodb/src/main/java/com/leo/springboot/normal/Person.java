@@ -2,50 +2,57 @@ package com.leo.springboot.normal;
 
 import org.bson.types.ObjectId;
 
-public class Person {
+public class Person{
 
-	private ObjectId id;
-	private String name;
-	private int age;
-	private Address address;
+    private ObjectId id;
 
-	public Person(ObjectId id, String name, int age, Address address) {
-		this.id = id;
-		this.name = name;
-		this.age = age;
-		this.address = address;
-	}
+    private String name;
 
-	public ObjectId getId() {
-		return id;
-	}
+    private int age;
 
-	public void setId(ObjectId id) {
-		this.id = id;
-	}
+    private Address address;
 
-	public String getName() {
-		return name;
-	}
+    public Person(){
+        super();
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public Person(ObjectId id, String name, int age, Address address){
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.address = address;
+    }
 
-	public int getAge() {
-		return age;
-	}
+    public ObjectId getId(){
+        return id;
+    }
 
-	public void setAge(int age) {
-		this.age = age;
-	}
+    public void setId(ObjectId id){
+        this.id = id;
+    }
 
-	public Address getAddress() {
-		return address;
-	}
+    public String getName(){
+        return name;
+    }
 
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public int getAge(){
+        return age;
+    }
+
+    public void setAge(int age){
+        this.age = age;
+    }
+
+    public Address getAddress(){
+        return address;
+    }
+
+    public void setAddress(Address address){
+        this.address = address;
+    }
 
 }

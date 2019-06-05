@@ -1,38 +1,45 @@
 package com.leo.springboot.normal;
 
-public class Address {
-	private String street;
-	private String city;
-	private String zip;
+public class Address{
 
-	public Address(String street, String city, String zip) {
-		this.street = street;
-		this.city = city;
-		this.zip = zip;
-	}
+    private String street;
 
-	public String getStreet() {
-		return street;
-	}
+    private String city;
 
-	public void setStreet(String street) {
-		this.street = street;
-	}
+    private String zip;
 
-	public String getCity() {
-		return city;
-	}
+    public Address(){
+        super();
+    }
 
-	public void setCity(String city) {
-		this.city = city;
-	}
+    public Address(String street, String city, String zip){
+        this.street = street;
+        this.city = city;
+        this.zip = zip;
+    }
 
-	public String getZip() {
-		return zip;
-	}
+    public String getStreet(){
+        return street;
+    }
 
-	public void setZip(String zip) {
-		this.zip = zip;
-	}
+    public void setStreet(String street){
+        this.street = street;
+    }
+
+    public String getCity(){
+        return city;
+    }
+
+    public void setCity(String city){
+        this.city = city;
+    }
+
+    public String getZip(){
+        return zip;
+    }
+
+    public void setZip(String zip){
+        this.zip = zip;
+    }
 
 }
