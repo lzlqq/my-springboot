@@ -18,5 +18,6 @@
 	
 	<modules>
 		<module>websocket-server</module>
+		<module>websocket-mongo</module>
 	</modules>
 </project>
