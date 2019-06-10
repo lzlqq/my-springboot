@@ -11,11 +11,11 @@
     </parent>
 
     <groupId>com.leo.springboot</groupId>
-    <artifactId>jdbc</artifactId>
+    <artifactId>my-jdbc</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 
-    <name>jdbc</name>
+    <name>my-jdbc</name>
     <description>Demo project for Spring Boot</description>
 
 

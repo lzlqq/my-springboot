@@ -12,10 +12,10 @@
   </parent>
 
   <groupId>com.leo.springboot</groupId>
-  <artifactId>validation</artifactId>
+  <artifactId>my-validation</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>validation</name>
+  <name>my-validation</name>
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 

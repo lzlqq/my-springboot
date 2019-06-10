@@ -11,9 +11,9 @@
 </parent>
 
 <groupId>com.leo.springboot</groupId>
-<artifactId>web-mvc</artifactId>
+<artifactId>my-webmvc</artifactId>
 <version>1.0-SNAPSHOT</version>
-<name>spring-webmvc</name>
+<name>my-webmvc</name>
 <description>Demo project for Spring Boot</description>
 
 <properties>

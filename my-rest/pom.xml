@@ -13,10 +13,10 @@
   </parent>
 
   <groupId>com.leo.springboot</groupId>
-  <artifactId>rest</artifactId>
+  <artifactId>my-rest</artifactId>
   <version>1.0-SNAPSHOT</version>
 
-  <name>rest</name>
+  <name>my-rest</name>
   <description>Demo project for Spring Boot</description>
 
   <properties>
