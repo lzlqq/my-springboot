@@ -8,6 +8,9 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,6 +24,7 @@ import lombok.NoArgsConstructor;
 public class Message {
 
 	@Id
+	@JsonSerialize(using = ToStringSerializer.class)//JSON 成字符串，而不是成对象
 	private ObjectId id;
 	private String msg;
 	/**
