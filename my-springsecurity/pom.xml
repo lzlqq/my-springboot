@@ -11,6 +11,7 @@
 	</properties>
 
 	<dependencyManagement>
+		<!-- 自动管理spring体系版本号 -->
 		<dependencies>
 			<dependency>
 				<groupId>io.spring.platform</groupId>
@@ -31,6 +32,7 @@
 
 	<build>
 		<plugins>
+			<!-- maven编译环境插件 -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
