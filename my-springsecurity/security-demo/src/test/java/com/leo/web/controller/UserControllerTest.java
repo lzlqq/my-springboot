@@ -4,8 +4,11 @@
 package com.leo.web.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +19,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.WebApplicationContext;
 
 /**
@@ -72,5 +76,21 @@ public class UserControllerTest {
 		mockMvc.perform(get("/user/a")
 				.contentType(MediaType.APPLICATION_JSON_UTF8))
 				.andExpect(status().is4xxClientError());
+	}
+	
+	@Test
+	public void whenCreateSuccess() throws Exception {
+		
+		Date date = new Date();
+		System.out.println(date.getTime());
+		String content = "{\"username\":\"tom\",\"password\":null,\"birthday\":"+date.getTime()+"}";
+		//前端传的参数的JSON字符串时候，Controller方法中接收参数上要加 @RequestBody注解将其解析成对象
+		String reuslt = mockMvc.perform(post("/user").contentType(MediaType.APPLICATION_JSON_UTF8)
+				.content(content))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value("1"))
+				.andReturn().getResponse().getContentAsString();
+		
+		System.out.println(reuslt);
 	}
 }
