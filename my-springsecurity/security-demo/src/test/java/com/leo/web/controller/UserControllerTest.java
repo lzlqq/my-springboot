@@ -56,4 +56,21 @@ public class UserControllerTest {
 		System.out.println(result);
 	}
 
+	@Test
+	public void whenGetInfoSuccess() throws Exception {
+		String result = mockMvc.perform(get("/user/1")
+				.contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.username").value("tom"))
+				.andReturn().getResponse().getContentAsString();
+		
+		System.out.println(result);
+	}
+	
+	@Test
+	public void whenGetInfoFail() throws Exception {
+		mockMvc.perform(get("/user/a")
+				.contentType(MediaType.APPLICATION_JSON_UTF8))
+				.andExpect(status().is4xxClientError());
+	}
 }
