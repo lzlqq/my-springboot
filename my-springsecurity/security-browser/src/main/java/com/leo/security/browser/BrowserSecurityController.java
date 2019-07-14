@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.leo.security.browser.support.SimpleResponse;
+import com.leo.security.core.properties.SecurityProperties;
 
 /**
  * @author zhailiang
@@ -34,15 +35,15 @@ public class BrowserSecurityController {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
-	private RequestCache requestCache = new HttpSessionRequestCache();
+	private RequestCache requestCache = new HttpSessionRequestCache();//获取引发认证的请求
 
-	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-
-	//@Autowired
-	//private SecurityProperties securityProperties;
+	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();// 重定向工具类
 
 	@Autowired
-	private ProviderSignInUtils providerSignInUtils;
+	private SecurityProperties securityProperties;
+
+	//@Autowired
+	//private ProviderSignInUtils providerSignInUtils;
 
 	/**
 	 * 当需要身份认证时，跳转到这里
@@ -64,8 +65,8 @@ public class BrowserSecurityController {
 			String targetUrl = savedRequest.getRedirectUrl();
 			logger.info("引发跳转的请求是:" + targetUrl);
 			if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")) {
-				//redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getLoginPage());
-				redirectStrategy.sendRedirect(request, response, "");
+				redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getLoginPage());
+				//redirectStrategy.sendRedirect(request, response, "");
 			}
 		}
 
