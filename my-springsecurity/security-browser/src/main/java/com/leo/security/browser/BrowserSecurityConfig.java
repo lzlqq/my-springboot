@@ -45,11 +45,13 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.formLogin()
 		//http.httpBasic()
-			.loginPage("/imooc-signIn.html")  //登录页面
+			//.loginPage("/imooc-signIn.html")  //登录页面
+			.loginPage("/authentication/require")  //自定义认证控制器接口
 			.loginProcessingUrl("/authentication/form") //申明使用UsernamePasswordxx过滤器验证登录
 			.and()
 			.authorizeRequests()
-			.antMatchers("/imooc-signIn.html").permitAll()
+			//.antMatchers("/authentication/require").permitAll()
+			.antMatchers("/authentication/require").permitAll()
 			.anyRequest()
 			.authenticated()
 			.and()
