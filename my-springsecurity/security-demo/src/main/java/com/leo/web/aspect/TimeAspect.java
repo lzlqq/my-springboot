@@ -18,8 +18,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @author zhailiang
  *
  */
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class TimeAspect {
 	
 	@Around("execution(* com.leo.web.controller.UserController.*(..))")
