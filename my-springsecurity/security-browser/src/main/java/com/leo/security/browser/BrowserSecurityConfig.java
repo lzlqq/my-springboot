@@ -10,7 +10,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 import com.leo.security.core.properties.SecurityProperties;
 
@@ -48,6 +50,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
 	
+	@Autowired
+	private AuthenticationFailureHandler imoocAuthenticationFailureHandler;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.formLogin()
@@ -56,6 +61,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 			.loginPage("/authentication/require")  //自定义认证控制器接口
 			.loginProcessingUrl("/authentication/form") //申明使用UsernamePasswordxx过滤器验证登录
 			.successHandler(imoocAuthenticationSuccessHandler) //自定义成功认证之后处理器
+			.failureHandler(imoocAuthenticationFailureHandler)//自定义失败认证之后处理器
 			.and()
 			.authorizeRequests()
 			//.antMatchers("/authentication/require").permitAll()
