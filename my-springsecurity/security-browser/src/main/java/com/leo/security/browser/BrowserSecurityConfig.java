@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.leo.security.core.properties.SecurityProperties;
 
@@ -44,6 +45,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 //	@Autowired
 //	private InvalidSessionStrategy invalidSessionStrategy;
 	
+	@Autowired
+	private AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.formLogin()
@@ -51,6 +55,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 			//.loginPage("/imooc-signIn.html")  //登录页面
 			.loginPage("/authentication/require")  //自定义认证控制器接口
 			.loginProcessingUrl("/authentication/form") //申明使用UsernamePasswordxx过滤器验证登录
+			.successHandler(imoocAuthenticationSuccessHandler) //自定义成功认证之后处理器
 			.and()
 			.authorizeRequests()
 			//.antMatchers("/authentication/require").permitAll()
