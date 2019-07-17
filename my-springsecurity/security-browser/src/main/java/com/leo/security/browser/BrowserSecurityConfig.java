@@ -13,8 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.leo.security.core.properties.SecurityProperties;
+import com.leo.security.core.validate.code.ValidateCodeFilter;
 
 /**
  * @author zhailiang
@@ -48,6 +50,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 //	private InvalidSessionStrategy invalidSessionStrategy;
 	
 	@Autowired
+	private ValidateCodeFilter validateCodeFilter;
+	
+	@Autowired
 	private AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
 	
 	@Autowired
@@ -55,7 +60,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.formLogin()
+		http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+			.formLogin()
 		//http.httpBasic()
 			//.loginPage("/imooc-signIn.html")  //登录页面
 			.loginPage("/authentication/require")  //自定义认证控制器接口

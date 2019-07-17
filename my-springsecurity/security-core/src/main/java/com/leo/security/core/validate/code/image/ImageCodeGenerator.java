@@ -14,11 +14,14 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import com.leo.security.core.properties.SecurityProperties;
+import com.leo.security.core.validate.code.ValidateCodeBeanConfig;
 import com.leo.security.core.validate.code.ValidateCodeGenerator;
 
 /**
  * @author zhailiang
- *
+ * 这里不是直接用的Spring自动注入，而是在{@link ValidateCodeBeanConfig}中配置的Bean，可以动态控制Bean的实例
+ * 在Config中配置的这个Bean,如果不想用了，在Demo中可以实现接口ValidateCodeGenerator，覆盖在{@link ValidateCodeBeanConfig}的配置
+ * 这一点很重要，以增量的方式维护代码
  */
 public class ImageCodeGenerator implements ValidateCodeGenerator {
 
