@@ -34,14 +34,14 @@ public class BrowserProperties {
 	public void setLoginType(LoginResponseType loginType) {
 		this.loginType = loginType;
 	}
-//
-//	public int getRememberMeSeconds() {
-//		return rememberMeSeconds;
-//	}
-//
-//	public void setRememberMeSeconds(int rememberMeSeconds) {
-//		this.rememberMeSeconds = rememberMeSeconds;
-//	}
+
+	public int getRememberMeSeconds() {
+		return rememberMeSeconds;
+	}
+
+	public void setRememberMeSeconds(int rememberMeSeconds) {
+		this.rememberMeSeconds = rememberMeSeconds;
+	}
 
 	public String getSignUpUrl() {
 		return signUpUrl;

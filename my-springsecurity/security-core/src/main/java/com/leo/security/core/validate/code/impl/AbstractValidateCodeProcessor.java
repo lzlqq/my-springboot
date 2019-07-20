@@ -113,8 +113,9 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 		ValidateCodeType processorType = getValidateCodeType(request);
 		String sessionKey = getSessionKey(request);
 
+		// Session中存储的验证码对象
 		C codeInSession = (C) sessionStrategy.getAttribute(request, sessionKey);
-
+		// 用户输入验证码，二者对比
 		String codeInRequest;
 		try {
 			codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(),
