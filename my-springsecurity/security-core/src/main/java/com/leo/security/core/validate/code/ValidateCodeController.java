@@ -44,6 +44,8 @@ public class ValidateCodeController {
 			// public void createCode(HttpServletRequest request, HttpServletResponse
 			// response)
 			throws Exception {
+		
+		// 开发技巧 --依赖搜索
 		validateCodeProcessorHolder.findValidateCodeProcessor(type).create(new ServletWebRequest(request, response));
 		// ImageCode imageCode = createImageCode(new ServletWebRequest(request,
 		// response));

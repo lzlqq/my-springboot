@@ -35,16 +35,14 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 	@Autowired
 	private Map<String, ValidateCodeGenerator> validateCodeGenerators;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.imooc.security.core.validate.code.ValidateCodeProcessor#create(org.
-	 * springframework.web.context.request.ServletWebRequest)
+	/**
+	 生成验证码的逻辑又封装了一个接口，这体现了代码架构设计中的分层封装思想
+	 此处也使用了依赖搜索
+	 另外步骤固定，抽象成模板方法
 	 */
 	@Override
 	public void create(ServletWebRequest request) throws Exception {
-		C validateCode = generate(request);
+		C validateCode = generate(request); 
 		save(request, validateCode);
 		send(request, validateCode);
 	}
