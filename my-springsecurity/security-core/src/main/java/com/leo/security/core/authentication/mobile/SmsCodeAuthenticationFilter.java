@@ -21,6 +21,7 @@ import com.leo.security.core.properties.SecurityConstants;
  * 2.短信登录认证过滤器，根据手机号获取用户信息
  * 3.自定义短信登录Token
  * 4.自定义短信登录Provider
+ * 5.根据流程图，配置组装这些类
  */
 public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 	// ~ Static fields/initializers
