@@ -35,13 +35,14 @@ public class SocialConfig extends SocialConfigurerAdapter {
 	private SecurityProperties securityProperties;
 
 	@Autowired(required = false)
-	private ConnectionSignUp connectionSignUp;
+	private ConnectionSignUp connectionSignUp;//本Demo中是DemoConnectionSignUp
 
 	/**
-	 * create table imooc_UserConnection ( userId varchar(255) not
-	 * null,#业务系统用户id，是通过providerId和openId，从服务商获取的服务商用户id，之后通过userId，调用UserDetailService获取详细信息
-	 * providerId varchar(255) not null,#服务提供商id providerUserId
-	 * varchar(255),#服务提供商上的用户id，也就是openId rank int not null, displayName
+	 * create table imooc_UserConnection (
+	 * userId varchar(255) not null,#业务系统用户id，可以是通过providerId和openId（providerUserId，从服务商获取的服务商用户id）默认生产，参见注册部分，之后通过userId，调用UserDetailService获取详细信息
+	 * providerId varchar(255) not null,#服务提供商id 
+	 * providerUserId varchar(255),#服务提供商上的用户id，也就是openId 
+	 * rank int not null, displayName
 	 * varchar(255), profileUrl varchar(512), imageUrl varchar(512), accessToken
 	 * varchar(512) not null, secret varchar(512), refreshToken varchar(512),
 	 * expireTime bigint, primary key (userId, providerId, providerUserId)); create
