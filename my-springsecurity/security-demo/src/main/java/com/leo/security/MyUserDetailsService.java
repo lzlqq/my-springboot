@@ -28,9 +28,10 @@ public class MyUserDetailsService implements UserDetailsService, SocialUserDetai
 		// 根据用户名查找用户信息
 		// 根据查找到的用户判断用户是否被冻结
 		// return new User(username, "123456", AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
-		String password = passwordEncoder.encode("123456");
-		logger.info("数据库密码是："+password);
-		return new User(username,password,true,true,true,true, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+//		String password = passwordEncoder.encode("123456");
+//		logger.info("数据库密码是："+password);
+//		return new User(username,password,true,true,true,true, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+		return buildUser(username);
 	}
 
 	
