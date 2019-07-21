@@ -33,31 +33,26 @@ public class SocialConfig extends SocialConfigurerAdapter {
 
 	@Autowired
 	private SecurityProperties securityProperties;
-	
+
 	@Autowired(required = false)
 	private ConnectionSignUp connectionSignUp;
+
 	/**
-	 * create table imooc_UserConnection (
-	 * userId varchar(255) not null,#业务系统用户id，是通过providerId和openId，从服务商获取的服务商用户id，之后通过userId，调用UserDetailService获取详细信息
-	providerId varchar(255) not null,#服务提供商id
-	providerUserId varchar(255),#服务提供商上的用户id，也就是openId
-	rank int not null,
-	displayName varchar(255),
-	profileUrl varchar(512),
-	imageUrl varchar(512),
-	accessToken varchar(512) not null,
-	secret varchar(512),
-	refreshToken varchar(512),
-	expireTime bigint,
-	primary key (userId, providerId, providerUserId));
-create unique index UserConnectionRank on UserConnection(userId, providerId, rank);
+	 * create table imooc_UserConnection ( userId varchar(255) not
+	 * null,#业务系统用户id，是通过providerId和openId，从服务商获取的服务商用户id，之后通过userId，调用UserDetailService获取详细信息
+	 * providerId varchar(255) not null,#服务提供商id providerUserId
+	 * varchar(255),#服务提供商上的用户id，也就是openId rank int not null, displayName
+	 * varchar(255), profileUrl varchar(512), imageUrl varchar(512), accessToken
+	 * varchar(512) not null, secret varchar(512), refreshToken varchar(512),
+	 * expireTime bigint, primary key (userId, providerId, providerUserId)); create
+	 * unique index UserConnectionRank on UserConnection(userId, providerId, rank);
 	 */
 	@Override
 	public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
 		JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource,
 				connectionFactoryLocator, Encryptors.noOpText());
 		repository.setTablePrefix("imooc_");
-		if(connectionSignUp != null) {
+		if (connectionSignUp != null) {
 			repository.setConnectionSignUp(connectionSignUp);
 		}
 		return repository;
@@ -67,7 +62,7 @@ create unique index UserConnectionRank on UserConnection(userId, providerId, ran
 	public SpringSocialConfigurer imoocSocialSecurityConfig() {
 		String filterProcessesUrl = securityProperties.getSocial().getFilterProcessesUrl();
 		ImoocSpringSocialConfigurer configurer = new ImoocSpringSocialConfigurer(filterProcessesUrl);
-	//configurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
+		configurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
 		return configurer;
 	}
 
