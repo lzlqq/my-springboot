@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import com.leo.security.core.authentication.AbstractChannelSecurityConfig;
 import com.leo.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
@@ -47,9 +48,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 	
 	@Autowired
 	private ValidateCodeSecurityConfig validateCodeSecurityConfig;
-//	
-//	@Autowired
-//	private SpringSocialConfigurer imoocSocialSecurityConfig;
+	
+	@Autowired
+	private SpringSocialConfigurer imoocSocialSecurityConfig;
 //	
 //	@Autowired
 //	private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
@@ -102,8 +103,8 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 				.and()
 			.apply(smsCodeAuthenticationSecurityConfig)
 				.and()
-//			.apply(imoocSocialSecurityConfig)
-//				.and()
+			.apply(imoocSocialSecurityConfig)
+				.and()
 			.rememberMe()
 				.tokenRepository(persistentTokenRepository())
 				.tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
