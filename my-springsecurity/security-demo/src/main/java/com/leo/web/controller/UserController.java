@@ -121,12 +121,17 @@ public class UserController {
 	
 	@Autowired
 	private ProviderSignInUtils providerSignInUtils;
-	
+	/**
+	 * 2.用户注册，调用的接口，是绑定第三方用户和qq账户的关系
+	 * @param user
+	 * @param request
+	 */
 	@PostMapping("/regist")
 	public void regist(User user, HttpServletRequest request) {
 		
 		//不管是注册用户还是绑定用户，都会拿到一个用户唯一标识。
 		String userId = user.getUsername();
+		// 数据库保存二者关系
 		providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
 	}
 
