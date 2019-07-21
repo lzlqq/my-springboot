@@ -4,13 +4,17 @@
 package com.leo.security.core.social.weixin.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.social.SocialAutoConfigurerAdapter;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.social.connect.ConnectionFactory;
+import org.springframework.web.servlet.View;
 
 import com.leo.security.core.properties.SecurityProperties;
 import com.leo.security.core.properties.WeixinProperties;
+import com.leo.security.core.social.ImoocConnectView;
 import com.leo.security.core.social.weixin.connect.WeixinConnectionFactory;
 
 /**
@@ -40,10 +44,10 @@ public class WeixinAutoConfiguration extends SocialAutoConfigurerAdapter {
 				weixinConfig.getAppSecret());
 	}
 	
-//	@Bean({"connect/weixinConnect", "connect/weixinConnected"})
-//	@ConditionalOnMissingBean(name = "weixinConnectedView")
-//	public View weixinConnectedView() {
-//		return new ImoocConnectView();
-//	}
+	@Bean({"connect/weixinConnect", "connect/weixinConnected"})
+	@ConditionalOnMissingBean(name = "weixinConnectedView")// 不想用这个，可以自定义一个覆盖这个默认的
+	public View weixinConnectedView() {
+		return new ImoocConnectView();
+	}
 	
 }
