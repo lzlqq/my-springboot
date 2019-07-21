@@ -24,6 +24,7 @@ public class QQOAuth2Template extends OAuth2Template {
 
 	public QQOAuth2Template(String clientId, String clientSecret, String authorizeUrl, String accessTokenUrl) {
 		super(clientId, clientSecret, authorizeUrl, accessTokenUrl);
+		// 默认是false，不带client_id和client_secret，需要设置为true
 		setUseParametersForClientAuthentication(true);
 	}
 	
@@ -32,7 +33,8 @@ public class QQOAuth2Template extends OAuth2Template {
 		String responseStr = getRestTemplate().postForObject(accessTokenUrl, parameters, String.class);
 		
 		logger.info("获取accessToke的响应："+responseStr);
-		
+		// QQ互联上是如果成功返回，即可在返回包中获取到Access Token。 如：
+		// access_token=FE04************************CCE2&expires_in=7776000&refresh_token=88E4************************BE14
 		String[] items = StringUtils.splitByWholeSeparatorPreserveAllTokens(responseStr, "&");
 		
 		String accessToken = StringUtils.substringAfterLast(items[0], "=");

@@ -6,12 +6,16 @@ package com.leo.security.core.social.qq;
 import org.springframework.social.security.SocialAuthenticationFilter;
 import org.springframework.social.security.SpringSocialConfigurer;
 
+import com.leo.security.core.properties.SocialProperties;
+
 /**
  * @author zhailiang
  *
  */
 public class ImoocSpringSocialConfigurer extends SpringSocialConfigurer {
-	
+	/**
+	 * {@link SocialProperties}
+	 */
 	private String filterProcessesUrl;
 	
 	public ImoocSpringSocialConfigurer(String filterProcessesUrl) {

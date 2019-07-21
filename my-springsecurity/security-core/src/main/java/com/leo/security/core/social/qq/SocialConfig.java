@@ -67,7 +67,7 @@ create unique index UserConnectionRank on UserConnection(userId, providerId, ran
 	public SpringSocialConfigurer imoocSocialSecurityConfig() {
 		String filterProcessesUrl = securityProperties.getSocial().getFilterProcessesUrl();
 		ImoocSpringSocialConfigurer configurer = new ImoocSpringSocialConfigurer(filterProcessesUrl);
-		configurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
+	//configurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
 		return configurer;
 	}
 
