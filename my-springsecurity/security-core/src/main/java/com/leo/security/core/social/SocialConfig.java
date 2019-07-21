@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.leo.security.core.social.qq;
+package com.leo.security.core.social;
 
 import javax.sql.DataSource;
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.leo.security.core.social.qq;
+package com.leo.security.core.social;
 
 import org.springframework.social.security.SocialAuthenticationFilter;
 import org.springframework.social.security.SpringSocialConfigurer;
