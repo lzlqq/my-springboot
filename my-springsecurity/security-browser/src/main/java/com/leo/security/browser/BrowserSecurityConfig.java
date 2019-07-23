@@ -110,6 +110,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 				.tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
 				.userDetailsService(userDetailsService)
 				.and()
+			.sessionManagement()
+				.invalidSessionUrl("/session/invalid")
+				.and()
 //			.sessionManagement()
 //				.invalidSessionStrategy(invalidSessionStrategy)
 //				.maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())
@@ -126,7 +129,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 					securityProperties.getBrowser().getSignUpUrl(),
 //					securityProperties.getBrowser().getSession().getSessionInvalidUrl()+".json",
 //					securityProperties.getBrowser().getSession().getSessionInvalidUrl()+".html",
-					"/user/regist")
+					"/user/regist","/session/invalid")
 					.permitAll()
 				.anyRequest()
 				.authenticated()
