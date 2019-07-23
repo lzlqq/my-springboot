@@ -9,7 +9,7 @@ package com.leo.security.core.properties;
  */
 public class BrowserProperties {
 	
-//	private SessionProperties session = new SessionProperties();
+	private SessionProperties session = new SessionProperties();
 	
 	private String signUpUrl = "/imooc-signUp.html";
 	
@@ -51,12 +51,12 @@ public class BrowserProperties {
 		this.signUpUrl = signUpUrl;
 	}
 
-//	public SessionProperties getSession() {
-//		return session;
-//	}
-//
-//	public void setSession(SessionProperties session) {
-//		this.session = session;
-//	}
+	public SessionProperties getSession() {
+		return session;
+	}
+
+	public void setSession(SessionProperties session) {
+		this.session = session;
+	}
 	
 }

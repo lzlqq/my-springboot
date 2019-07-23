@@ -9,23 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.social.security.SpringSocialConfigurer;
 
-import com.leo.security.browser.session.ImoocExpiredSessionStrategy;
 import com.leo.security.core.authentication.AbstractChannelSecurityConfig;
 import com.leo.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.leo.security.core.properties.SecurityConstants;
 import com.leo.security.core.properties.SecurityProperties;
-import com.leo.security.core.validate.code.ValidateCodeFilter;
 import com.leo.security.core.validate.code.ValidateCodeSecurityConfig;
 
 /**
@@ -52,12 +48,12 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 	
 	@Autowired
 	private SpringSocialConfigurer imoocSocialSecurityConfig;
-//	
-//	@Autowired
-//	private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
-//	
-//	@Autowired
-//	private InvalidSessionStrategy invalidSessionStrategy;
+	
+	@Autowired
+	private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
+	
+	@Autowired
+	private InvalidSessionStrategy invalidSessionStrategy;
 	
 //	@Autowired
 //	private ValidateCodeFilter validateCodeFilter;
@@ -111,20 +107,20 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 				.tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
 				.userDetailsService(userDetailsService)
 				.and()
-			.sessionManagement()
-				.invalidSessionUrl("/session/invalid")
-				.maximumSessions(1)
-				.maxSessionsPreventsLogin(true)//控制已存在用户超过maximumSessions数时策略，能否再登陆，默认是false，已登录的被挤下线，设置为true时，再登陆报错
-				.expiredSessionStrategy(new ImoocExpiredSessionStrategy())
-				.and()
-				.and()
 //			.sessionManagement()
-//				.invalidSessionStrategy(invalidSessionStrategy)
-//				.maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())
-//				.maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())
-//				.expiredSessionStrategy(sessionInformationExpiredStrategy)
+//				.invalidSessionUrl("/session/invalid")
+//				.maximumSessions(1)
+//				.maxSessionsPreventsLogin(true)//控制已存在用户超过maximumSessions数时策略，能否再登陆，默认是false，已登录的被挤下线，设置为true时，再登陆报错
+//				.expiredSessionStrategy(new ImoocExpiredSessionStrategy())
 //				.and()
 //				.and()
+			.sessionManagement()
+				.invalidSessionStrategy(invalidSessionStrategy)// session 过期策略
+				.maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())
+				.maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())
+				.expiredSessionStrategy(sessionInformationExpiredStrategy) // session并发策略
+				.and()
+				.and()
 			.authorizeRequests()
 				.antMatchers(
 					SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
@@ -134,7 +130,10 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 					securityProperties.getBrowser().getSignUpUrl(),
 //					securityProperties.getBrowser().getSession().getSessionInvalidUrl()+".json",
 //					securityProperties.getBrowser().getSession().getSessionInvalidUrl()+".html",
-					"/user/regist","/session/invalid")
+					securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
+					"/user/regist"
+//					,"/session/invalid"
+					)
 					.permitAll()
 				.anyRequest()
 				.authenticated()

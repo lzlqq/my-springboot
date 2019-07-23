@@ -48,6 +48,9 @@ public interface SecurityConstants {
 	/**
 	 * session失效默认的跳转地址
 	 */
-	public static final String DEFAULT_SESSION_INVALID_URL = "/session/invalid";
-
+	//public static final String DEFAULT_SESSION_INVALID_URL = "/session/invalid";
+	/**
+	 * session失效默认的跳转地址
+	 */
+	public static final String DEFAULT_SESSION_INVALID_URL = "/imooc-session-invalid.html";
 }
