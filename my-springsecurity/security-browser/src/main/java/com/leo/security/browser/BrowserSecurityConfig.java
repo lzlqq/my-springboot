@@ -121,6 +121,10 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 				.expiredSessionStrategy(sessionInformationExpiredStrategy) // session并发策略
 				.and()
 				.and()
+			.logout()
+				.logoutUrl("/signOut")
+				.logoutSuccessUrl("/imooc-logout.html")
+				.and()
 			.authorizeRequests()
 				.antMatchers(
 					SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
