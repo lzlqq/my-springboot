@@ -114,6 +114,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 			.sessionManagement()
 				.invalidSessionUrl("/session/invalid")
 				.maximumSessions(1)
+				.maxSessionsPreventsLogin(true)//控制已存在用户超过maximumSessions数时策略，能否再登陆，默认是false，已登录的被挤下线，设置为true时，再登陆报错
 				.expiredSessionStrategy(new ImoocExpiredSessionStrategy())
 				.and()
 				.and()
