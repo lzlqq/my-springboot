@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
@@ -54,6 +55,8 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 	
 	@Autowired
 	private InvalidSessionStrategy invalidSessionStrategy;
+	@Autowired
+	private LogoutSuccessHandler logoutSuccessHandler;
 	
 //	@Autowired
 //	private ValidateCodeFilter validateCodeFilter;
@@ -96,6 +99,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 		
 		applyPasswordAuthenticationConfig(http);
 		
+
 		http.apply(validateCodeSecurityConfig)
 				.and()
 			.apply(smsCodeAuthenticationSecurityConfig)
@@ -123,7 +127,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 				.and()
 			.logout()
 				.logoutUrl("/signOut")
-				.logoutSuccessUrl("/imooc-logout.html")
+				//.logoutSuccessUrl("/imooc-logout.html")
+				.logoutSuccessHandler(logoutSuccessHandler)//和url互斥
+				.deleteCookies("JSESSIONID")//退出时删除cookie
 				.and()
 			.authorizeRequests()
 				.antMatchers(
@@ -135,6 +141,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 //					securityProperties.getBrowser().getSession().getSessionInvalidUrl()+".json",
 //					securityProperties.getBrowser().getSession().getSessionInvalidUrl()+".html",
 					securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
+					securityProperties.getBrowser().getSignOutUrl(),
 					"/user/regist"
 //					,"/session/invalid"
 					)
