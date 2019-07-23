@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.social.security.SpringSocialConfigurer;
 
+import com.leo.security.browser.session.ImoocExpiredSessionStrategy;
 import com.leo.security.core.authentication.AbstractChannelSecurityConfig;
 import com.leo.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.leo.security.core.properties.SecurityConstants;
@@ -112,6 +113,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 				.and()
 			.sessionManagement()
 				.invalidSessionUrl("/session/invalid")
+				.maximumSessions(1)
+				.expiredSessionStrategy(new ImoocExpiredSessionStrategy())
+				.and()
 				.and()
 //			.sessionManagement()
 //				.invalidSessionStrategy(invalidSessionStrategy)
