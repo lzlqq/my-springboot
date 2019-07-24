@@ -152,11 +152,6 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 			.csrf().disable();
 		
 	}
-
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
 	
 	@Bean
 	public PersistentTokenRepository persistentTokenRepository() {
