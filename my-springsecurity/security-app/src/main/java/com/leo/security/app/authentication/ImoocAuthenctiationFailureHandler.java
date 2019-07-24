@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.leo.security.browser.authentication;
+package com.leo.security.app.authentication;
 
 import java.io.IOException;
 

@@ -13,8 +13,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.leo.security.browser.support.SimpleResponse;
 import com.leo.security.core.properties.SecurityProperties;
+import com.leo.security.core.support.SimpleResponse;
 
 public class ImoocLogoutSuccessHandler implements LogoutSuccessHandler{
 

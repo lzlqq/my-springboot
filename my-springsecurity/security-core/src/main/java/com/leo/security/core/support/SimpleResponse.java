@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.leo.security.browser.support;
+package com.leo.security.core.support;
 
 /**
  * @author zhailiang

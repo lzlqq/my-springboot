@@ -27,9 +27,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import com.leo.security.browser.support.SimpleResponse;
 import com.leo.security.browser.support.SocialUserInfo;
 import com.leo.security.core.properties.SecurityProperties;
+import com.leo.security.core.support.SimpleResponse;
 
 /**
  * @author zhailiang
