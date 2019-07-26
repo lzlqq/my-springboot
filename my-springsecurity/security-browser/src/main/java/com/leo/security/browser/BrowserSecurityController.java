@@ -32,72 +32,75 @@ import com.leo.security.core.properties.SecurityProperties;
 import com.leo.security.core.support.SimpleResponse;
 
 /**
+ * 浏览器环境下与安全相关的服务
+ * 
  * @author zhailiang
  *
  */
 @RestController
-public class BrowserSecurityController {
+public class BrowserSecurityController{
 
-	private Logger logger = LoggerFactory.getLogger(getClass());
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
-	private RequestCache requestCache = new HttpSessionRequestCache();//获取引发认证的请求
+    private RequestCache requestCache = new HttpSessionRequestCache();//获取引发认证的请求
 
-	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();// 重定向工具类
+    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();// 重定向工具类
 
-	@Autowired
-	private SecurityProperties securityProperties;
+    @Autowired
+    private SecurityProperties securityProperties;
 
-	@Autowired
-	private ProviderSignInUtils providerSignInUtils;
+    @Autowired
+    private ProviderSignInUtils providerSignInUtils;
 
-	/**
-	 * 当需要身份认证时，跳转到这里
-	 * 
-	 * @param request
-	 * @param response
-	 * @return
-	 * @throws IOException
-	 */
-//	@RequestMapping(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
-	@RequestMapping("/authentication/require")
-	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-	public SimpleResponse requireAuthentication(HttpServletRequest request, HttpServletResponse response)
-			throws IOException {
+    /**
+     * 当需要身份认证时，跳转到这里
+     * 
+     * @param request
+     * @param response
+     * @return
+     * @throws IOException
+     */
+    //	@RequestMapping(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
+    @RequestMapping("/authentication/require")
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public SimpleResponse requireAuthentication(HttpServletRequest request,HttpServletResponse response) throws IOException{
 
-		SavedRequest savedRequest = requestCache.getRequest(request, response);
+        SavedRequest savedRequest = requestCache.getRequest(request, response);
 
-		if (savedRequest != null) {
-			String targetUrl = savedRequest.getRedirectUrl();
-			logger.info("引发跳转的请求是:" + targetUrl);
-			if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")) {
-				redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getLoginPage());
-				//redirectStrategy.sendRedirect(request, response, "");
-			}
-		}
+        if (savedRequest != null){
+            String targetUrl = savedRequest.getRedirectUrl();
+            logger.info("引发跳转的请求是:" + targetUrl);
+            if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")){
+                redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getLoginPage());
+                //redirectStrategy.sendRedirect(request, response, "");
+            }
+        }
 
-		return new SimpleResponse("访问的服务需要身份认证，请引导用户到登录页");
-	}
-/**
- * 1.这个请求是在{@link SocialAuthenticationFilter}，跑出异常之后，去注册页面时调用的，
- * 在catch里面将从服务商获取的用户信息放进Session的，然后再冲Session中拿出来给前端用户使用
- * @param request
- * @return
- */
-	@GetMapping("/social/user")
-	public SocialUserInfo getSocialUserInfo(HttpServletRequest request) {
-		SocialUserInfo userInfo = new SocialUserInfo();
-		Connection<?> connection = providerSignInUtils.getConnectionFromSession(new ServletWebRequest(request));
-		userInfo.setProviderId(connection.getKey().getProviderId());
-		userInfo.setProviderUserId(connection.getKey().getProviderUserId());
-		userInfo.setNickname(connection.getDisplayName());
-		userInfo.setHeadimg(connection.getImageUrl());
-		return userInfo;
-	}
-	
-	@RequestMapping("/session/invalid")
-	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-	public SimpleResponse sessionInvalid() {
-		return new SimpleResponse("session失效");
-	}
+        return new SimpleResponse("访问的服务需要身份认证，请引导用户到登录页");
+    }
+
+    /**
+     * 1.这个请求是在{@link SocialAuthenticationFilter}，跑出异常之后，去注册页面时调用的，
+     * 在catch里面将从服务商获取的用户信息放进Session的，然后再冲Session中拿出来给前端用户使用
+     * 
+     * @param request
+     * @return
+     */
+    @GetMapping("/social/user")
+    public SocialUserInfo getSocialUserInfo(HttpServletRequest request){
+        SocialUserInfo userInfo = new SocialUserInfo();
+        Connection<?> connection = providerSignInUtils.getConnectionFromSession(new ServletWebRequest(request));
+        userInfo.setProviderId(connection.getKey().getProviderId());
+        userInfo.setProviderUserId(connection.getKey().getProviderUserId());
+        userInfo.setNickname(connection.getDisplayName());
+        userInfo.setHeadimg(connection.getImageUrl());
+        return userInfo;
+    }
+
+    @RequestMapping("/session/invalid")
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    public SimpleResponse sessionInvalid(){
+        return new SimpleResponse("session失效");
+    }
 
 }

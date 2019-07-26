@@ -15,7 +15,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  */
 @Configuration
 @EnableAuthorizationServer
-public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+public class ImoocAuthorizationServerConfig {
+    // 此处要是集成了AuthorizationServerConfigurerAdapter，会报java.lang.UnsupportedOperationException: Cannot build client services (maybe use inMemory() or jdbc()).
+    // copy代码，一定要核对清楚，既然原来都没问题，新加copy了代码进来，而视频中没问题的，说明copy进来的时候，肯定是多了什么，或者少了什么
+//extends AuthorizationServerConfigurerAdapter {
 //
 //	/**
 //	 * 继承了AuthorizationServerConfigurerAdapter类，就需要注入userDetailsService和authenticationManager
