@@ -21,11 +21,11 @@ public class WebConfig  extends WebMvcConfigurerAdapter {
 	private TimeInterceptor timeInterceptor;
 	
 	// 异步拦截器、线程池等配置，需要通过这了配置才行
-	@Override
-	public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
-		super.configureAsyncSupport(configurer);
-	}
-	
+//	@Override
+//	public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
+//		super.configureAsyncSupport(configurer);
+//	}
+//	
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 //		registry.addInterceptor(timeInterceptor);

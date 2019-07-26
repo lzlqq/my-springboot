@@ -15,12 +15,12 @@ import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MyUserDetailsService implements UserDetailsService, SocialUserDetailsService{
+public class DemoUserDetailsService implements UserDetailsService, SocialUserDetailsService{
 	
-	private Logger logger = LoggerFactory.getLogger(MyUserDetailsService.class);
+	private Logger logger = LoggerFactory.getLogger(DemoUserDetailsService.class);
 	
 	@Autowired
-	PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -48,6 +48,6 @@ public class MyUserDetailsService implements UserDetailsService, SocialUserDetai
 		logger.info("数据库密码是:"+password);
 		return new SocialUser(userId, password,
 				true, true, true, true,
-				AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+				AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER"));
 	}
 }

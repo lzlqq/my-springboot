@@ -42,97 +42,98 @@ import io.swagger.annotations.ApiParam;
  */
 @RestController
 @RequestMapping("/user")
-public class UserController {
+public class UserController{
 
-	@GetMapping
-	@JsonView(User.UserSimpleView.class)
-	@ApiOperation(value = "用户查询服务")
-	public List<User> query(UserQueryCondition condition,
-			@PageableDefault(page = 2, size = 17, sort = "username,asc") Pageable pageable) {
+    @Autowired
+    private ProviderSignInUtils providerSignInUtils;
 
-		System.out.println(ReflectionToStringBuilder.toString(condition, ToStringStyle.MULTI_LINE_STYLE));
+    /**
+     * 2.用户注册，调用的接口，是绑定第三方用户和qq账户的关系
+     * 
+     * @param user
+     * @param request
+     */
+    @PostMapping("/regist")
+    public void regist(User user,HttpServletRequest request){
 
-		System.out.println(pageable.getPageSize());
-		System.out.println(pageable.getPageNumber());
-		System.out.println(pageable.getSort());
+        //不管是注册用户还是绑定用户，都会拿到一个用户唯一标识。
+        String userId = user.getUsername();
+        // 数据库保存二者关系
+        providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+    }
 
-		List<User> users = new ArrayList<>();
-		users.add(new User());
-		users.add(new User());
-		users.add(new User());
-		return users;
-	}
+    @GetMapping("/me")
+    public Object getCurrentUser(@AuthenticationPrincipal UserDetails user){
+        //  public Object getCurrentUser(@Authentication authentication) {
+        //  public Object getCurrentUser() {
+        //      return SecurityContextHolder.getContext().getAuthentication();
+        //      return authentication;
+        return user;
+    }
 
-	@GetMapping("/{id:\\d+}")
-	@JsonView(User.UserDetailView.class)
-	public User getInfo(@ApiParam("用户id") @PathVariable String id) {
-		// throw new RuntimeException("user not exist");
-		System.out.println("进入getInfo服务");
-		User user = new User();
-		user.setUsername("tom");
-		return user;
-	}
+    @PostMapping
+    @ApiOperation(value = "创建用户")
+    public User create(@Valid @RequestBody User user){
 
-	@PostMapping
-	@ApiOperation(value = "创建用户")
-	public User create(@Valid @RequestBody User user) {
+        System.out.println(user.getId());
+        System.out.println(user.getUsername());
+        System.out.println(user.getPassword());
+        System.out.println(user.getBirthday());
 
-		System.out.println(user.getId());
-		System.out.println(user.getUsername());
-		System.out.println(user.getPassword());
-		System.out.println(user.getBirthday());
+        user.setId("1");
+        return user;
+    }
 
-		user.setId("1");
-		return user;
-	}
+    @PutMapping("/{id:\\d+}")
+    public User update(@Valid @RequestBody User user,BindingResult errors){
 
-	@PutMapping("/{id:\\d+}")
-	public User update(@Valid @RequestBody User user, BindingResult errors) {
+        if (errors.hasErrors()){
+            errors.getAllErrors().stream().forEach(x -> {
+                FieldError error = (FieldError) x;
+                System.out.println(error.getField() + " : " + error.getDefaultMessage());
+            });
+        }
 
-		if (errors.hasErrors()) {
-			errors.getAllErrors().stream().forEach(x -> {
-				FieldError error = (FieldError) x;
-				System.out.println(error.getField() + " : " + error.getDefaultMessage());
-			});
-		}
+        System.out.println(user.getId());
+        System.out.println(user.getUsername());
+        System.out.println(user.getPassword());
+        System.out.println(user.getBirthday());
 
-		System.out.println(user.getId());
-		System.out.println(user.getUsername());
-		System.out.println(user.getPassword());
-		System.out.println(user.getBirthday());
+        user.setId("1");
+        return user;
+    }
 
-		user.setId("1");
-		return user;
-	}
-	
-	@DeleteMapping("/{id:\\d+}")
-	public void delete(@PathVariable String id) {
-		System.out.println(id);
-	}
-	
-	@GetMapping("/me")
-	public Object getCurrentUser(@AuthenticationPrincipal UserDetails user) {
-//	public Object getCurrentUser(@Authentication authentication) {
-//	public Object getCurrentUser() {
-//		return SecurityContextHolder.getContext().getAuthentication();
-//		return authentication;
-		return user;
-	}
-	
-	@Autowired
-	private ProviderSignInUtils providerSignInUtils;
-	/**
-	 * 2.用户注册，调用的接口，是绑定第三方用户和qq账户的关系
-	 * @param user
-	 * @param request
-	 */
-	@PostMapping("/regist")
-	public void regist(User user, HttpServletRequest request) {
-		
-		//不管是注册用户还是绑定用户，都会拿到一个用户唯一标识。
-		String userId = user.getUsername();
-		// 数据库保存二者关系
-		providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
-	}
+    @DeleteMapping("/{id:\\d+}")
+    public void delete(@PathVariable String id){
+        System.out.println(id);
+    }
+
+    @GetMapping
+    @JsonView(User.UserSimpleView.class)
+    @ApiOperation(value = "用户查询服务")
+    public List<User> query(UserQueryCondition condition,@PageableDefault(page = 2,size = 17,sort = "username,asc") Pageable pageable){
+
+        System.out.println(ReflectionToStringBuilder.toString(condition, ToStringStyle.MULTI_LINE_STYLE));
+
+        System.out.println(pageable.getPageSize());
+        System.out.println(pageable.getPageNumber());
+        System.out.println(pageable.getSort());
+
+        List<User> users = new ArrayList<>();
+        users.add(new User());
+        users.add(new User());
+        users.add(new User());
+        return users;
+    }
+
+    @GetMapping("/{id:\\d+}")
+    @JsonView(User.UserDetailView.class)
+    public User getInfo(@ApiParam("用户id") @PathVariable String id){
+        // throw new RuntimeException("user not exist");
+        System.out.println("进入getInfo服务");
+        User user = new User();
+        user.setUsername("tom");
+        return user;
+    }
 
 }
