@@ -315,5 +315,6 @@
 	</build>
 	<modules>
 		<module>my-common</module>
+		<module>my-sharding-jdbc</module>
 	</modules>
 </project>
