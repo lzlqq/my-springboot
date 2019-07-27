@@ -81,7 +81,10 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 		.successHandler(imoocAuthenticationSuccessHandler)
 		.failureHandler(imoocAuthenticationFailureHandler);
 		
-
+		/**
+		 * 验证码的过滤器运行在认证过滤器之前，因为是先验证验证码，对不对，再来验证用户所输入的用户名密码是否正确，符合正常逻辑
+		 * 注意这两个过滤器配置的顺序
+		 */
 		http.apply(validateCodeSecurityConfig)
 				.and()
 			.apply(smsCodeAuthenticationSecurityConfig)

@@ -16,7 +16,6 @@ import org.springframework.util.Assert;
 import com.leo.security.core.properties.SecurityConstants;
 
 /**
- * @author zhailiang
  * 1.短信验证码验证过滤器，验证短信验证码是否正确
  * 2.短信登录认证过滤器，根据手机号获取用户信息
  * 3.自定义短信登录Token
