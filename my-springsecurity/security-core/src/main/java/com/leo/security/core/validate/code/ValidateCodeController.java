@@ -15,7 +15,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import com.leo.security.core.properties.SecurityConstants;
 
 /**
- * @author zhailiang
+ * 生成校验码的请求处理器
  *
  */
 @RestController
@@ -23,12 +23,6 @@ public class ValidateCodeController {
 
 	@Autowired
 	private ValidateCodeProcessorHolder validateCodeProcessorHolder;
-
-	/**
-	 * 验证码放入session时的前缀
-	 */
-	//private String SESSION_KEY = "SESSION_KEY_IMAGE_CODE";
-	//private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
 	/**
 	 * 创建验证码，根据验证码类型不同，调用不同的 {@link ValidateCodeProcessor}接口实现
@@ -39,26 +33,11 @@ public class ValidateCodeController {
 	 * @throws Exception
 	 */
 	@GetMapping(SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/{type}")
-	// @GetMapping("/code/image")
 	public void createCode(HttpServletRequest request, HttpServletResponse response, @PathVariable String type)
-			// public void createCode(HttpServletRequest request, HttpServletResponse
-			// response)
 			throws Exception {
-		
+
 		// 开发技巧 --依赖搜索
 		validateCodeProcessorHolder.findValidateCodeProcessor(type).create(new ServletWebRequest(request, response));
-		// ImageCode imageCode = createImageCode(new ServletWebRequest(request,
-		// response));
-		// sessionStrategy.setAttribute(new ServletWebRequest(request),SESSION_KEY,
-		// imageCode);
-		// ImageIO.write(imageCode.getImage(), "JPEG", response.getOutputStream());
 	}
-
-	// private ImageCode createImageCode(ServletWebRequest request) {
-	// SecurityProperties securityProperties = new SecurityProperties();
-	// ImageCodeGenerator imageCodeGenerator = new ImageCodeGenerator();
-	// imageCodeGenerator.setSecurityProperties(securityProperties);
-	// return imageCodeGenerator.generate(request);
-	// }
 
 }

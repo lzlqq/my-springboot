@@ -29,11 +29,10 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.leo.security.core.properties.LoginResponseType;
-import com.leo.security.core.properties.SecurityProperties;
 
 /**
- * @author zhailiang
+ * APP环境下认证成功处理器
+ * @author Administrator
  *
  */
 @Component("imoocAuthenticationSuccessHandler")
@@ -50,14 +49,6 @@ public class ImoocAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 	@Autowired
 	private AuthorizationServerTokenServices authorizationServerTokenServices;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.springframework.security.web.authentication.
-	 * AuthenticationSuccessHandler#onAuthenticationSuccess(javax.servlet.http.
-	 * HttpServletRequest, javax.servlet.http.HttpServletResponse,
-	 * org.springframework.security.core.Authentication)
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,

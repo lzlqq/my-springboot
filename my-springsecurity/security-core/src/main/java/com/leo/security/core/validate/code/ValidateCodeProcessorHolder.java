@@ -9,12 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * @author zhailiang
+ * 校验码处理器管理器
  *
  */
 @Component
 public class ValidateCodeProcessorHolder {
 
+	/**
+	 * 依赖搜索
+	 * 
+	 * Spring启动时，会查找容器中所有的ValidateCodeProcessor接口的实现，并把Bean的名字作为key，放到map中
+	 */
 	@Autowired
 	private Map<String, ValidateCodeProcessor> validateCodeProcessors;
 
