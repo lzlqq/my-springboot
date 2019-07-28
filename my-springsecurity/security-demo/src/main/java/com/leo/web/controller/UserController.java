@@ -32,6 +32,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.leo.dto.User;
 import com.leo.dto.UserQueryCondition;
+import com.leo.security.app.social.impl.AppSingUpUtils;
 
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -46,6 +47,9 @@ public class UserController{
 
     @Autowired
     private ProviderSignInUtils providerSignInUtils;
+    
+	@Autowired
+	private AppSingUpUtils appSingUpUtils;
 
     /**
      * 2.用户注册，调用的接口，是绑定第三方用户和qq账户的关系
@@ -59,7 +63,8 @@ public class UserController{
         //不管是注册用户还是绑定用户，都会拿到一个用户唯一标识。
         String userId = user.getUsername();
         // 数据库保存二者关系
-        providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+ //       providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+		appSingUpUtils.doPostSignUp(new ServletWebRequest(request), userId);
     }
 
     @GetMapping("/me")

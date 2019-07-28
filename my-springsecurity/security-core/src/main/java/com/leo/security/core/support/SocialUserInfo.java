@@ -1,20 +1,13 @@
-/**
- * 
- */
-package com.leo.security.browser.support;
+package com.leo.security.core.support;
 
-/**
- * @author zhailiang
- *
- */
 public class SocialUserInfo {
-	
+
 	private String providerId;
-	
+
 	private String providerUserId;
-	
+
 	private String nickname;
-	
+
 	private String headimg;
 
 	public String getProviderId() {
@@ -48,5 +41,5 @@ public class SocialUserInfo {
 	public void setHeadimg(String headimg) {
 		this.headimg = headimg;
 	}
-	
+
 }
