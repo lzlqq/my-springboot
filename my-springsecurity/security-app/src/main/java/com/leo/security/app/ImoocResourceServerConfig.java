@@ -12,6 +12,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.social.security.SpringSocialConfigurer;
 
+import com.leo.security.app.authentication.openid.OpenIdAuthenticationSecurityConfig;
 import com.leo.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.leo.security.core.properties.SecurityConstants;
 import com.leo.security.core.properties.SecurityProperties;
@@ -37,9 +38,9 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 	
 	@Autowired
 	private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
-//	
-//	@Autowired
-//	private OpenIdAuthenticationSecurityConfig openIdAuthenticationSecurityConfig;
+	
+	@Autowired
+	private OpenIdAuthenticationSecurityConfig openIdAuthenticationSecurityConfig;
 	
 	@Autowired
 	private ValidateCodeSecurityConfig validateCodeSecurityConfig;
@@ -91,10 +92,12 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.and()
 			.apply(imoocSocialSecurityConfig)
 				.and()
+			.apply(openIdAuthenticationSecurityConfig)
+				.and()
 			.authorizeRequests()
 				.antMatchers(
 					SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
-					SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
+					SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE,
 					securityProperties.getBrowser().getLoginPage(),
 					SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
 					securityProperties.getBrowser().getSignUpUrl(),

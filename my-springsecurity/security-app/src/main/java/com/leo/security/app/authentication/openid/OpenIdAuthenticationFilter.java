@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.leo.security.core.authentication.mobile;
+package com.leo.security.app.authentication.openid;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,24 +16,23 @@ import org.springframework.util.Assert;
 import com.leo.security.core.properties.SecurityConstants;
 
 /**
- * 1.短信验证码验证过滤器，验证短信验证码是否正确
- * 2.短信登录认证过滤器，根据手机号获取用户信息
- * 3.自定义短信登录Token
- * 4.自定义短信登录Provider
- * 5.根据流程图，配置组装这些类
+ * openId
+ * 
+ *
  */
-public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
+public class OpenIdAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 	// ~ Static fields/initializers
 	// =====================================================================================
 
-	private String mobileParameter = SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE;
+	private String openIdParameter = SecurityConstants.DEFAULT_PARAMETER_NAME_OPENID;
+	private String providerIdParameter = SecurityConstants.DEFAULT_PARAMETER_NAME_PROVIDERID;
 	private boolean postOnly = true;
 
 	// ~ Constructors
 	// ===================================================================================================
 
-	public SmsCodeAuthenticationFilter() {
-		super(new AntPathRequestMatcher(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE, "POST"));
+	public OpenIdAuthenticationFilter() {
+		super(new AntPathRequestMatcher(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_OPENID, "POST"));
 	}
 
 	// ~ Methods
@@ -45,15 +44,20 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
 			throw new AuthenticationServiceException("Authentication method not supported: " + request.getMethod());
 		}
 
-		String mobile = obtainMobile(request);
+		String openid = obtainOpenId(request);
+		String providerId = obtainProviderId(request);
 
-		if (mobile == null) {
-			mobile = "";
+		if (openid == null) {
+			openid = "";
+		}
+		if (providerId == null) {
+			providerId = "";
 		}
 
-		mobile = mobile.trim();
+		openid = openid.trim();
+		providerId = providerId.trim();
 
-		SmsCodeAuthenticationToken authRequest = new SmsCodeAuthenticationToken(mobile);
+		OpenIdAuthenticationToken authRequest = new OpenIdAuthenticationToken(openid, providerId);
 
 		// Allow subclasses to set the "details" property
 		setDetails(request, authRequest);
@@ -63,10 +67,17 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
 
 
 	/**
-	 * 获取手机号
+	 * 获取openId
 	 */
-	protected String obtainMobile(HttpServletRequest request) {
-		return request.getParameter(mobileParameter);
+	protected String obtainOpenId(HttpServletRequest request) {
+		return request.getParameter(openIdParameter);
+	}
+	
+	/**
+	 * 获取提供商id
+	 */
+	protected String obtainProviderId(HttpServletRequest request) {
+		return request.getParameter(providerIdParameter);
 	}
 
 	/**
@@ -79,7 +90,7 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
 	 *            the authentication request object that should have its details
 	 *            set
 	 */
-	protected void setDetails(HttpServletRequest request, SmsCodeAuthenticationToken authRequest) {
+	protected void setDetails(HttpServletRequest request, OpenIdAuthenticationToken authRequest) {
 		authRequest.setDetails(authenticationDetailsSource.buildDetails(request));
 	}
 
@@ -90,9 +101,9 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
 	 * @param usernameParameter
 	 *            the parameter name. Defaults to "username".
 	 */
-	public void setMobileParameter(String usernameParameter) {
-		Assert.hasText(usernameParameter, "Username parameter must not be empty or null");
-		this.mobileParameter = usernameParameter;
+	public void setOpenIdParameter(String openIdParameter) {
+		Assert.hasText(openIdParameter, "Username parameter must not be empty or null");
+		this.openIdParameter = openIdParameter;
 	}
 
 
@@ -109,8 +120,16 @@ public class SmsCodeAuthenticationFilter extends AbstractAuthenticationProcessin
 		this.postOnly = postOnly;
 	}
 
-	public final String getMobileParameter() {
-		return mobileParameter;
+	public final String getOpenIdParameter() {
+		return openIdParameter;
+	}
+
+	public String getProviderIdParameter() {
+		return providerIdParameter;
+	}
+
+	public void setProviderIdParameter(String providerIdParameter) {
+		this.providerIdParameter = providerIdParameter;
 	}
 
 }
