@@ -18,6 +18,8 @@ public class OrderProducer {
 					msgStr.getBytes(RemotingHelper.DEFAULT_CHARSET));
 			SendResult sendResult = producer.send(message, (mqs, msg, arg) -> {
 				Integer id = (Integer) arg;
+				// 1.mqs是topic下的分区，orderId取模分区数，就会把同一个orderId发送到同一个分区上
+				// 2.顺序发送时，才有的是同步发送，保证同一个分区消息有序
 				int index = id % mqs.size();
 				return mqs.get(index);
 			}, orderId);
