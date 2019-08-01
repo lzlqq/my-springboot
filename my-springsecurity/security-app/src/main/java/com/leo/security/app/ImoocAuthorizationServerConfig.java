@@ -3,9 +3,14 @@
  */
 package com.leo.security.app;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 
 /**
  * 认证服务器配置
@@ -15,20 +20,20 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
  */
 @Configuration
 @EnableAuthorizationServer
-public class ImoocAuthorizationServerConfig {
+public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
     // 此处要是集成了AuthorizationServerConfigurerAdapter，会报java.lang.UnsupportedOperationException: Cannot build client services (maybe use inMemory() or jdbc()).
     // copy代码，一定要核对清楚，既然原来都没问题，新加copy了代码进来，而视频中没问题的，说明copy进来的时候，肯定是多了什么，或者少了什么
-//extends AuthorizationServerConfigurerAdapter {
+
 //
 //	/**
 //	 * 继承了AuthorizationServerConfigurerAdapter类，就需要注入userDetailsService和authenticationManager
 //	 * 如果没有继承，使用默认的机制不需要注入，Spring自己回去查找
 //	 */
-//	@Autowired
-//	private UserDetailsService userDetailsService;
-//
-//	@Autowired
-//	private AuthenticationManager authenticationManager;
+	@Autowired
+	private UserDetailsService userDetailsService;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
 //
 //	@Autowired
 //	private TokenStore tokenStore;
@@ -41,15 +46,15 @@ public class ImoocAuthorizationServerConfig {
 //
 //	@Autowired
 //	private SecurityProperties securityProperties;
-//
-//	/**
-//	 * 认证及token配置
-//	 */
-//	@Override
-//	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+
+	/**
+	 * 认证及token配置
+	 */
+	@Override
+	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 //		endpoints.tokenStore(tokenStore) // 将token存储到redis中
-//				.authenticationManager(authenticationManager)
-//				.userDetailsService(userDetailsService);
+				endpoints.authenticationManager(authenticationManager)
+				.userDetailsService(userDetailsService);
 //
 //		// 如果配置了imooc.security.oauth2.tokenStore=jwt或者根本没有配置imooc.security.oauth2.tokenStore，那么使用的是JWT
 //		if (jwtAccessTokenConverter != null && jwtTokenEnhancer != null) {
@@ -62,7 +67,7 @@ public class ImoocAuthorizationServerConfig {
 //			endpoints.tokenEnhancer(enhancerChain).accessTokenConverter(jwtAccessTokenConverter);
 //		}
 //
-//	}
+	}
 //
 //	/**
 //	 * tokenKey的访问权限表达式配置
@@ -90,5 +95,15 @@ public class ImoocAuthorizationServerConfig {
 //			}
 //		}
 //	}
+	
+	@Override
+	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+		clients.inMemory().withClient("imooc")
+		.secret("imoocsecret")
+		.authorizedGrantTypes("refresh_token", "authorization_code", "password") // 客户端支持的授权模式
+		.accessTokenValiditySeconds(7200) // 令牌的有效时间
+		.refreshTokenValiditySeconds(2592000)
+		.scopes("all","read","write");
+	}
 
 }
