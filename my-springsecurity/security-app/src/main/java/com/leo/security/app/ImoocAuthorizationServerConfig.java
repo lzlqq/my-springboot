@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 import com.leo.security.core.properties.OAuth2ClientProperties;
 import com.leo.security.core.properties.SecurityProperties;
@@ -39,9 +40,9 @@ public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigure
 
 	@Autowired
 	private AuthenticationManager authenticationManager;
-//
-//	@Autowired
-//	private TokenStore tokenStore;
+
+	@Autowired
+	private TokenStore tokenStore;
 //
 //	@Autowired(required = false)
 //	private JwtAccessTokenConverter jwtAccessTokenConverter;
@@ -57,8 +58,8 @@ public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigure
 	 */
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-//		endpoints.tokenStore(tokenStore) // 将token存储到redis中
-				endpoints.authenticationManager(authenticationManager)
+		endpoints.tokenStore(tokenStore) // 将token存储到redis中
+				.authenticationManager(authenticationManager)
 				.userDetailsService(userDetailsService);
 //
 //		// 如果配置了imooc.security.oauth2.tokenStore=jwt或者根本没有配置imooc.security.oauth2.tokenStore，那么使用的是JWT
