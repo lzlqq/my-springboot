@@ -3,12 +3,14 @@
  */
 package com.leo.web.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,14 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.leo.dto.User;
 import com.leo.dto.UserQueryCondition;
 import com.leo.security.app.social.impl.AppSingUpUtils;
+import com.leo.security.core.properties.SecurityProperties;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 
@@ -51,6 +60,9 @@ public class UserController{
     
 	@Autowired
 	private AppSingUpUtils appSingUpUtils;
+	
+	@Autowired
+	private SecurityProperties securityProperties;
 
     /**
      * 2.用户注册，调用的接口，是绑定第三方用户和qq账户的关系
@@ -72,10 +84,27 @@ public class UserController{
     // @AuthenticationPrincipal 指的是获取的Authenticatio的Princip是UserDetails实现
    // public Object getCurrentUser(@AuthenticationPrincipal UserDetails user){
     // 使用jwttokenstore时候，这里返回的Authentication的Principal是个字符串，不是UserDetails
-    public Object getCurrentUser(Authentication user) {
+    //public Object getCurrentUser(Authentication user) {
         //  public Object getCurrentUser() {
         //      return SecurityContextHolder.getContext().getAuthentication();
         //      return authentication;
+    	public Object getCurrentUser(Authentication user, HttpServletRequest request) throws 
+		ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, 
+		IllegalArgumentException, UnsupportedEncodingException {
+		
+		// 获取JWT
+		String token = StringUtils.substringAfter(request.getHeader("Authorization"), "bearer ");
+		
+		Claims claims = Jwts.parser().setSigningKey(securityProperties.getOauth2().getJwtSigningKey().getBytes("UTF-8"))
+					.parseClaimsJws(token).getBody();
+		
+		// 获取为JWT扩展的信息
+		String company = (String) claims.get("company");
+		
+		System.out.println(company);
+		
+		// 获取 用户认证信息，可以直接在参数中声明Authentication user直接获取，Spring会自动注入这个对象
+		// return SecurityContextHolder.getContext().getAuthentication(); 
         return user;
     }
 
