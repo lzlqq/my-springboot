@@ -14,6 +14,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.social.connect.web.ProviderSignInUtils;
@@ -68,8 +69,10 @@ public class UserController{
     }
 
     @GetMapping("/me")
-    public Object getCurrentUser(@AuthenticationPrincipal UserDetails user){
-        //  public Object getCurrentUser(@Authentication authentication) {
+    // @AuthenticationPrincipal 指的是获取的Authenticatio的Princip是UserDetails实现
+   // public Object getCurrentUser(@AuthenticationPrincipal UserDetails user){
+    // 使用jwttokenstore时候，这里返回的Authentication的Principal是个字符串，不是UserDetails
+    public Object getCurrentUser(Authentication user) {
         //  public Object getCurrentUser() {
         //      return SecurityContextHolder.getContext().getAuthentication();
         //      return authentication;

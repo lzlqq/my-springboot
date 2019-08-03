@@ -5,6 +5,7 @@ package com.leo.security.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -79,14 +80,16 @@ public class TokenStoreConfig {
 		}
 		
 		/**
+		 * @ConditionalOnBean
 		 * @return
 		 */
-//		@Bean
-//		@ConditionalOnBean(TokenEnhancer.class)
-//		public TokenEnhancer jwtTokenEnhancer(){
-//			return new TokenJwtEnhancer();
-//		}
-//		
+		@Bean
+		@ConditionalOnBean(TokenEnhancer.class)
+		// @ConditionalOnMissingBean(name="jwtTokenEnhancer") 配置这个注解，业务系统可以配置自己的jwtTokenEnhancer，来覆盖掉这个默认的逻辑
+		public TokenEnhancer jwtTokenEnhancer(){
+			return new TokenJwtEnhancer();
+		}
+		
 	}
 	
 	

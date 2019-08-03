@@ -3,6 +3,9 @@
  */
 package com.leo.security.app;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +16,8 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
@@ -47,9 +52,9 @@ public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigure
 
 	@Autowired(required = false)
 	private JwtAccessTokenConverter jwtAccessTokenConverter;
-//
-//	@Autowired(required = false)
-//	private TokenEnhancer jwtTokenEnhancer;
+
+	@Autowired(required = false)
+	private TokenEnhancer jwtTokenEnhancer;
 
 	@Autowired
 	private SecurityProperties securityProperties;
@@ -62,20 +67,18 @@ public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigure
 		endpoints.tokenStore(tokenStore) // 将token存储到redis中
 				.authenticationManager(authenticationManager)
 				.userDetailsService(userDetailsService);
-		if(jwtAccessTokenConverter!=null) {
-			endpoints.accessTokenConverter(jwtAccessTokenConverter);
+
+		// 如果配置了imooc.security.oauth2.tokenStore=jwt或者根本没有配置imooc.security.oauth2.tokenStore，那么使用的是JWT
+		if (jwtAccessTokenConverter != null && jwtTokenEnhancer != null) {
+			// TokenEnhancerChain是增强器链
+			TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+			List<TokenEnhancer> enhancers = new ArrayList<>();
+			enhancers.add(jwtTokenEnhancer);
+			enhancers.add(jwtAccessTokenConverter);
+			enhancerChain.setTokenEnhancers(enhancers);
+			endpoints.tokenEnhancer(enhancerChain).accessTokenConverter(jwtAccessTokenConverter);
 		}
-//		// 如果配置了imooc.security.oauth2.tokenStore=jwt或者根本没有配置imooc.security.oauth2.tokenStore，那么使用的是JWT
-//		if (jwtAccessTokenConverter != null && jwtTokenEnhancer != null) {
-//			// TokenEnhancerChain是增强器链
-//			TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
-//			List<TokenEnhancer> enhancers = new ArrayList<>();
-//			enhancers.add(jwtTokenEnhancer);
-//			enhancers.add(jwtAccessTokenConverter);
-//			enhancerChain.setTokenEnhancers(enhancers);
-//			endpoints.tokenEnhancer(enhancerChain).accessTokenConverter(jwtAccessTokenConverter);
-//		}
-//
+
 	}
 //
 //	/**
