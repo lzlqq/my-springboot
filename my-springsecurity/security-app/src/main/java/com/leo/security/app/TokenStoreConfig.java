@@ -4,12 +4,18 @@
 package com.leo.security.app;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+
+import com.leo.security.core.properties.SecurityProperties;
 
 /**
  *
@@ -39,49 +45,49 @@ public class TokenStoreConfig {
 	}
 
 	/**
-	 * 使用jwt时的配置，默认生效（matchIfMissing = true）
+	 * 使用jwt时的配置，默认生效（matchIfMissing = true），为true时，不配置也生效
 	 * 
 	 *
 	 */
-//	@Configuration
-//	@ConditionalOnProperty(prefix = "imooc.security.oauth2", name = "tokenStore", havingValue = "jwt", matchIfMissing = true)
-//	public static class JwtConfig {
-//		
-//		@Autowired
-//		private SecurityProperties securityProperties;
-//		
-//		/**
-//		 * @return
-//		 * 配置token的存储
-//		 */
-//		@Bean
-//		public TokenStore jwtTokenStore() {
-//			return new JwtTokenStore(jwtAccessTokenConverter());
-//		}
-//		
-//		/**
-//		 * @return
-//		 * 配置token的生成
-//		 * 
-//		 */
-//		@Bean
-//		public JwtAccessTokenConverter jwtAccessTokenConverter(){
-//			JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-//			// 指定签名的秘钥
-//	        converter.setSigningKey(securityProperties.getOauth2().getJwtSigningKey());
-//	        return converter;
-//		}
-//		
-//		/**
-//		 * @return
-//		 */
+	@Configuration
+	@ConditionalOnProperty(prefix = "imooc.security.oauth2", name = "tokenStore", havingValue = "jwt", matchIfMissing = true)
+	public static class JwtConfig {
+		
+		@Autowired
+		private SecurityProperties securityProperties;
+		
+		/**
+		 * @return
+		 * 配置token的存储
+		 */
+		@Bean
+		public TokenStore jwtTokenStore() {
+			return new JwtTokenStore(jwtAccessTokenConverter());
+		}
+		
+		/**
+		 * @return
+		 * 配置token的生成
+		 * 
+		 */
+		@Bean
+		public JwtAccessTokenConverter jwtAccessTokenConverter(){
+			JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+			// 指定签名的秘钥
+	        converter.setSigningKey(securityProperties.getOauth2().getJwtSigningKey());
+	        return converter;
+		}
+		
+		/**
+		 * @return
+		 */
 //		@Bean
 //		@ConditionalOnBean(TokenEnhancer.class)
 //		public TokenEnhancer jwtTokenEnhancer(){
 //			return new TokenJwtEnhancer();
 //		}
 //		
-//	}
+	}
 	
 	
 

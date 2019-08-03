@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import com.leo.security.core.properties.OAuth2ClientProperties;
 import com.leo.security.core.properties.SecurityProperties;
@@ -43,9 +44,9 @@ public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigure
 
 	@Autowired
 	private TokenStore tokenStore;
-//
-//	@Autowired(required = false)
-//	private JwtAccessTokenConverter jwtAccessTokenConverter;
+
+	@Autowired(required = false)
+	private JwtAccessTokenConverter jwtAccessTokenConverter;
 //
 //	@Autowired(required = false)
 //	private TokenEnhancer jwtTokenEnhancer;
@@ -61,7 +62,9 @@ public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigure
 		endpoints.tokenStore(tokenStore) // 将token存储到redis中
 				.authenticationManager(authenticationManager)
 				.userDetailsService(userDetailsService);
-//
+		if(jwtAccessTokenConverter!=null) {
+			endpoints.accessTokenConverter(jwtAccessTokenConverter);
+		}
 //		// 如果配置了imooc.security.oauth2.tokenStore=jwt或者根本没有配置imooc.security.oauth2.tokenStore，那么使用的是JWT
 //		if (jwtAccessTokenConverter != null && jwtTokenEnhancer != null) {
 //			// TokenEnhancerChain是增强器链
