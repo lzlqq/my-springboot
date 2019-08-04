@@ -58,42 +58,6 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 	@Autowired
 	private LogoutSuccessHandler logoutSuccessHandler;
 	
-//	@Autowired
-//	private ValidateCodeFilter validateCodeFilter;
-	
-//	@Autowired
-//	private AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
-//	
-//	@Autowired
-//	private AuthenticationFailureHandler imoocAuthenticationFailureHandler;
-	
-//	@Override
-//	protected void configure(HttpSecurity http) throws Exception {
-//		http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
-//			.formLogin()
-//			//http.httpBasic()
-//				//.loginPage("/imooc-signIn.html")  //登录页面
-//				.loginPage("/authentication/require")  //自定义认证控制器接口,SpringSecurity判断某个接口需要认证登录，这个接口负责给前端返回页面或者JSON
-//				.loginProcessingUrl("/authentication/form") //上面那个配置如果返回时页面的化，页面上面的登录表单接口是这个，SpringSecurity中验证这个接口使用UsernamePasswordxx过滤器验证登录
-//				.successHandler(imoocAuthenticationSuccessHandler) //自定义成功认证之后处理器
-//				.failureHandler(imoocAuthenticationFailureHandler)//自定义失败认证之后处理器
-//				.and()
-//			.rememberMe()
-//				.tokenRepository(persistentTokenRepository())
-//				.tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
-//				.userDetailsService(userDetailsService)
-//				.and()			
-//			.authorizeRequests()
-//			//.antMatchers("/authentication/require").permitAll()
-//			.antMatchers("/authentication/require",
-//					securityProperties.getBrowser().getLoginPage(),
-//					"/code/*").permitAll()
-//			.anyRequest()
-//			.authenticated()
-//			.and()
-//			.csrf().disable();
-//	}
-//	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
@@ -146,6 +110,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 //					,"/session/invalid"
 					)
 					.permitAll()
+				.antMatchers("/user").hasRole("ADMIN")
 				.anyRequest()
 				.authenticated()
 				.and()
