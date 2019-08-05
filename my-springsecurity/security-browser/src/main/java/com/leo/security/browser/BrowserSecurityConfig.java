@@ -111,8 +111,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 //					,"/session/invalid"
 					)
 					.permitAll()
-//				.antMatchers("/user").hasRole("ADMIN")
-				.antMatchers(HttpMethod.GET,"/user/*").hasRole("ADMIN")
+//				.antMatchers("/user").hasRole("ADMIN") //每一个权限表达式都是和一个antMatchers配合使用的
+				.antMatchers(HttpMethod.GET,"/user/*").hasRole("ADMIN")  //hasRole要求在UserDetailService中的权限前面加上ROLE_
+//				.antMatchers(HttpMethod.GET,"/user/*").access("hasRole('ADMIN') and hasIpAddress('xxx')") // 混合使用
 				.anyRequest()
 				.authenticated()
 				.and()
