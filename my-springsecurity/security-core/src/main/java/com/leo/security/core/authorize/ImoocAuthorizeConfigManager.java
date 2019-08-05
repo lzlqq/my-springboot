@@ -17,6 +17,9 @@ import java.util.List;
 @Component
 public class ImoocAuthorizeConfigManager implements AuthorizeConfigManager {
 
+	/**
+	 * 这个是有序集合，不能用Set
+	 */
     @Autowired
     private List<AuthorizeConfigProvider> authorizeConfigProviders;
 
