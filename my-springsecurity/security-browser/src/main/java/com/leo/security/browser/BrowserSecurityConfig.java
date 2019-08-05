@@ -11,8 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -22,6 +20,7 @@ import org.springframework.social.security.SpringSocialConfigurer;
 
 import com.leo.security.core.authentication.AbstractChannelSecurityConfig;
 import com.leo.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.leo.security.core.authorize.AuthorizeConfigManager;
 import com.leo.security.core.properties.SecurityConstants;
 import com.leo.security.core.properties.SecurityProperties;
 import com.leo.security.core.validate.code.ValidateCodeSecurityConfig;
@@ -59,6 +58,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 	@Autowired
 	private LogoutSuccessHandler logoutSuccessHandler;
 	
+	@Autowired
+	private AuthorizeConfigManager authorizeConfigManager;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
@@ -71,6 +73,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 				.and()
 			.apply(imoocSocialSecurityConfig)
 				.and()
+				//记住我配置，如果想在'记住我'登录时记录日志，可以注册一个InteractiveAuthenticationSuccessEvent事件的监听器
 			.rememberMe()
 				.tokenRepository(persistentTokenRepository())
 				.tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
@@ -96,29 +99,29 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 				.logoutSuccessHandler(logoutSuccessHandler)//和url互斥
 				.deleteCookies("JSESSIONID")//退出时删除cookie
 				.and()
-			.authorizeRequests()
-				.antMatchers(
-					SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
-					SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE,
-					securityProperties.getBrowser().getLoginPage(),
-					SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
-					securityProperties.getBrowser().getSignUpUrl(),
+//			.authorizeRequests()
+//				.antMatchers(
+//					SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+//					SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE,
+//					securityProperties.getBrowser().getLoginPage(),
+//					SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
+//					securityProperties.getBrowser().getSignUpUrl(),
 //					securityProperties.getBrowser().getSession().getSessionInvalidUrl()+".json",
 //					securityProperties.getBrowser().getSession().getSessionInvalidUrl()+".html",
-					securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
-					securityProperties.getBrowser().getSignOutUrl(),
-					"/user/regist"
+//					securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
+//					securityProperties.getBrowser().getSignOutUrl(),
+//					"/user/regist"
 //					,"/session/invalid"
-					)
-					.permitAll()
+//					)
+//					.permitAll()
 //				.antMatchers("/user").hasRole("ADMIN") //每一个权限表达式都是和一个antMatchers配合使用的
-				.antMatchers(HttpMethod.GET,"/user/*").hasRole("ADMIN")  //hasRole要求在UserDetailService中的权限前面加上ROLE_
+//				.antMatchers(HttpMethod.GET,"/user/*").hasRole("ADMIN")  //hasRole要求在UserDetailService中的权限前面加上ROLE_
 //				.antMatchers(HttpMethod.GET,"/user/*").access("hasRole('ADMIN') and hasIpAddress('xxx')") // 混合使用
-				.anyRequest()
-				.authenticated()
-				.and()
+//				.anyRequest()
+//				.authenticated()
+//				.and()
 			.csrf().disable();
-		
+		authorizeConfigManager.config(http.authorizeRequests());
 	}
 	
 	@Bean

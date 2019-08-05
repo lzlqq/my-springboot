@@ -8,16 +8,16 @@ package com.leo.security.core.properties;
  *
  */
 public class BrowserProperties {
-	
+
 	private SessionProperties session = new SessionProperties();
-	
+
 	private String signUpUrl = "/imooc-signUp.html";
-	private String signOutUrl ;
-	
+	private String signOutUrl;
+
 	private String loginPage = SecurityConstants.DEFAULT_SIGN_IN_PAGE_URL;
 
 	private LoginResponseType loginType = LoginResponseType.JSON;
-	
+
 	private int rememberMeSeconds = 3600;
 
 	public String getLoginPage() {
@@ -67,5 +67,5 @@ public class BrowserProperties {
 	public void setSignOutUrl(String signOutUrl) {
 		this.signOutUrl = signOutUrl;
 	}
-	
+
 }

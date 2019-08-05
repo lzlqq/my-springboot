@@ -14,6 +14,7 @@ import org.springframework.social.security.SpringSocialConfigurer;
 
 import com.leo.security.app.authentication.openid.OpenIdAuthenticationSecurityConfig;
 import com.leo.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.leo.security.core.authorize.AuthorizeConfigManager;
 import com.leo.security.core.properties.SecurityConstants;
 import com.leo.security.core.properties.SecurityProperties;
 import com.leo.security.core.validate.code.ValidateCodeSecurityConfig;
@@ -47,9 +48,9 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 	
 	@Autowired
 	private SpringSocialConfigurer imoocSocialSecurityConfig;
-//	
-//	@Autowired
-//	private AuthorizeConfigManager authorizeConfigManager;
+	
+	@Autowired
+	private AuthorizeConfigManager authorizeConfigManager;
 //	
 //	@Autowired
 //	private FormAuthenticationConfig formAuthenticationConfig;
@@ -94,22 +95,23 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.and()
 			.apply(openIdAuthenticationSecurityConfig)
 				.and()
-			.authorizeRequests()
-				.antMatchers(
-					SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
-					SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE,
-					securityProperties.getBrowser().getLoginPage(),
-					SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
-					securityProperties.getBrowser().getSignUpUrl(),
-					securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
-					securityProperties.getBrowser().getSignOutUrl(),
-					"/user/regist","/social/user"
-					)
-					.permitAll()
-				.anyRequest()
-				.authenticated()
-				.and()
+//			.authorizeRequests()
+//				.antMatchers(
+//					SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+//					SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE,
+//					securityProperties.getBrowser().getLoginPage(),
+//					SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
+//					securityProperties.getBrowser().getSignUpUrl(),
+//					securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
+//					securityProperties.getBrowser().getSignOutUrl(),
+//					"/user/regist","/social/user"
+//					)
+//					.permitAll()
+//				.anyRequest()
+//				.authenticated()
+//				.and()
 			.csrf().disable();
+		authorizeConfigManager.config(http.authorizeRequests());
 	}
 	
 }
