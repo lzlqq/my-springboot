@@ -23,11 +23,11 @@ import com.leo.security.core.properties.SecurityProperties;
 import com.leo.security.core.support.SimpleResponse;
 
 /**
- * @author zhailiang
+ * 浏览器环境下登录失败的处理器
  *
  */
-@Component("imoocAuthenctiationFailureHandler")
-public class ImoocAuthenctiationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+@Component("imoocAuthenticationFailureHandler")
+public class ImoocAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 	
@@ -38,8 +38,8 @@ public class ImoocAuthenctiationFailureHandler extends SimpleUrlAuthenticationFa
 	private SecurityProperties securityProperties;
 
 	
-	/* (non-Javadoc)
-	 * @see org.springframework.security.web.authentication.AuthenticationFailureHandler#onAuthenticationFailure(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, org.springframework.security.core.AuthenticationException)
+	/**
+	 * 登录失败处理 
 	 */
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
@@ -47,8 +47,8 @@ public class ImoocAuthenctiationFailureHandler extends SimpleUrlAuthenticationFa
 		
 		logger.info("登录失败");
 		
-		if (LoginResponseType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
-			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+		if (LoginResponseType.JSON.equals(securityProperties.getBrowser().getSignInResponseType())) {
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
 			response.setContentType("application/json;charset=UTF-8");
 			response.getWriter().write(objectMapper.writeValueAsString(new SimpleResponse(exception.getMessage())));
 		}else{
