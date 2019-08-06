@@ -11,20 +11,21 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.web.session.InvalidSessionStrategy;
 
+import com.leo.security.core.properties.SecurityProperties;
+
 /**
- * @author zhailiang
+ * 默认的session失效处理策略
  *
  */
-public class ImoocInvalidSessionStrategy extends AbstractSessionStrategy implements InvalidSessionStrategy {
+public class ImoocInvalidSessionStrategy extends AbstractSessionStrategy implements InvalidSessionStrategy{
 
-	public ImoocInvalidSessionStrategy(String invalidSessionUrl) {
-		super(invalidSessionUrl);
-	}
+    public ImoocInvalidSessionStrategy(SecurityProperties securityProperties){
+        super(securityProperties);
+    }
 
-	@Override
-	public void onInvalidSessionDetected(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
-		onSessionInvalid(request, response);
-	}
+    @Override
+    public void onInvalidSessionDetected(HttpServletRequest request,HttpServletResponse response) throws IOException,ServletException{
+        onSessionInvalid(request, response);
+    }
 
 }
