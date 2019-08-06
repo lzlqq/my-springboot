@@ -13,14 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.web.ConnectController;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.AbstractView;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
- * @author zhailiang
+ * 社交账号绑定状态视图
  * {@ ConnectController}中默认跳转的视图，名字固定
  */
 @Component("connect/status")
@@ -29,9 +28,6 @@ public class ImoocConnectionStatusView extends AbstractView {
 	@Autowired
 	private ObjectMapper objectMapper;
 	
-	/* (non-Javadoc)
-	 * @see org.springframework.web.servlet.view.AbstractView#renderMergedOutputModel(java.util.Map, javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
