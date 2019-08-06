@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.SpringSecurityCoreVersion;
 
 /**
- * @author zhailiang
+ * 短信登录验证信息封装类
  *
  */
 public class SmsCodeAuthenticationToken extends AbstractAuthenticationToken {

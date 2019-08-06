@@ -14,16 +14,16 @@
 			<artifactId>security-browser</artifactId>
 			<version>${leo.security.version}</version>
 		</dependency>
-		<!-- <dependency> 
-		<groupId>com.leo.springboot</groupId> 
-		<artifactId>security-app</artifactId> 
-			<version>${leo.security.version}</version> 
+		<!-- <dependency>
+			<groupId>com.leo.springboot</groupId>
+			<artifactId>security-app</artifactId>
+			<version>${leo.security.version}</version>
 		</dependency> -->
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>com.leo.springboot</groupId>
 			<artifactId>security-authorize</artifactId>
 			<version>${leo.security.version}</version>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
