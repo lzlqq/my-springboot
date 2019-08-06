@@ -16,7 +16,6 @@ import com.leo.security.app.authentication.openid.OpenIdAuthenticationSecurityCo
 import com.leo.security.core.authentication.FormAuthenticationConfig;
 import com.leo.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.leo.security.core.authorize.AuthorizeConfigManager;
-import com.leo.security.core.properties.SecurityConstants;
 import com.leo.security.core.validate.code.ValidateCodeSecurityConfig;
 
 /**
