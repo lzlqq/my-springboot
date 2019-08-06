@@ -4,19 +4,19 @@
 package com.leo.security.core.properties;
 
 /**
- * @author zhailiang
+ * 认证成功后的响应方式
  *
  */
-public enum LoginResponseType {
-	
-	/**
-	 * 跳转
-	 */
-	REDIRECT,
-	
-	/**
-	 * 返回json
-	 */
-	JSON
+public enum LoginResponseType{
+
+    /**
+     * 跳转
+     */
+    REDIRECT,
+
+    /**
+     * 返回json
+     */
+    JSON
 
 }

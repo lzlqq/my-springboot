@@ -4,29 +4,35 @@
 package com.leo.security.core.properties;
 
 /**
- * @author zhailiang
+ * 验证码配置
  *
  */
-public class ValidateCodeProperties {
-	
-	private ImageCodeProperties image = new ImageCodeProperties();
-	
-	private SmsCodeProperties sms = new SmsCodeProperties();
+public class ValidateCodeProperties{
 
-	public ImageCodeProperties getImage() {
-		return image; 
-	}
+    /**
+     * 图片验证码配置
+     */
+    private ImageCodeProperties image = new ImageCodeProperties();
 
-	public void setImage(ImageCodeProperties image) {
-		this.image = image;
-	}
+    /**
+     * 短信验证码配置
+     */
+    private SmsCodeProperties sms = new SmsCodeProperties();
 
-	public SmsCodeProperties getSms() {
-		return sms;
-	}
+    public ImageCodeProperties getImage(){
+        return image;
+    }
 
-	public void setSms(SmsCodeProperties sms) {
-		this.sms = sms;
-	}
-	
+    public void setImage(ImageCodeProperties image){
+        this.image = image;
+    }
+
+    public SmsCodeProperties getSms(){
+        return sms;
+    }
+
+    public void setSms(SmsCodeProperties sms){
+        this.sms = sms;
+    }
+
 }

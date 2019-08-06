@@ -6,29 +6,29 @@ package com.leo.security.core.properties;
 import org.springframework.boot.autoconfigure.social.SocialProperties;
 
 /**
- * @author zhailiang
+ * 微信登录配置项
  *
  */
-public class WeixinProperties extends SocialProperties {
-	
-	/**
-	 * 第三方id，用来决定发起第三方登录的url，默认是 weixin。
-	 */
-	private String providerId = "weixin";
+public class WeixinProperties extends SocialProperties{
 
-	/**
-	 * @return the providerId
-	 */
-	public String getProviderId() {
-		return providerId;
-	}
+    /**
+     * 第三方id，用来决定发起第三方登录的url，默认是 weixin。
+     */
+    private String providerId = "weixin";
 
-	/**
-	 * @param providerId the providerId to set
-	 */
-	public void setProviderId(String providerId) {
-		this.providerId = providerId;
-	}
-	
+    /**
+     * @return the providerId
+     */
+    public String getProviderId(){
+        return providerId;
+    }
+
+    /**
+     * @param providerId
+     *            the providerId to set
+     */
+    public void setProviderId(String providerId){
+        this.providerId = providerId;
+    }
 
 }
