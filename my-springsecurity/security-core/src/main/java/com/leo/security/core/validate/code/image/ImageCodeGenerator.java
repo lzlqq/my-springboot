@@ -18,92 +18,92 @@ import com.leo.security.core.validate.code.ValidateCodeBeanConfig;
 import com.leo.security.core.validate.code.ValidateCodeGenerator;
 
 /**
- * @author zhailiang
+ * 默认的图片验证码生成器
+ * 
+ * 
  * 这里不是直接用的Spring自动注入，而是在{@link ValidateCodeBeanConfig}中配置的Bean，可以动态控制Bean的实例
  * 在Config中配置的这个Bean,如果不想用了，在Demo中可以实现接口ValidateCodeGenerator，覆盖在{@link ValidateCodeBeanConfig}的配置
  * 这一点很重要，以增量的方式维护代码
  */
-public class ImageCodeGenerator implements ValidateCodeGenerator {
+public class ImageCodeGenerator implements ValidateCodeGenerator{
 
-	/**
-	 * 系统配置
-	 */
-	@Autowired
-	private SecurityProperties securityProperties;
-	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.imooc.security.core.validate.code.ValidateCodeGenerator#generate(org.
-	 * springframework.web.context.request.ServletWebRequest)
-	 */
-	@Override
-	public ImageCode generate(ServletWebRequest request) {
-		int width = ServletRequestUtils.getIntParameter(request.getRequest(), "width",
-				securityProperties.getCode().getImage().getWidth());
-		int height = ServletRequestUtils.getIntParameter(request.getRequest(), "height",
-				securityProperties.getCode().getImage().getHeight());
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+    /**
+     * 系统配置
+     */
+    @Autowired
+    private SecurityProperties securityProperties;
 
-		Graphics g = image.getGraphics();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * com.imooc.security.core.validate.code.ValidateCodeGenerator#generate(org.
+     * springframework.web.context.request.ServletWebRequest)
+     */
+    @Override
+    public ImageCode generate(ServletWebRequest request){
+        // 首先从请求参数中获取验证码的宽度，如果没有则使用配置的值
+        // 这里是实现了验证码参数的三级可配：请求级>应用级>默认配置
+        int width = ServletRequestUtils.getIntParameter(request.getRequest(), "width", securityProperties.getCode().getImage().getWidth());
+        int height = ServletRequestUtils.getIntParameter(request.getRequest(), "height", securityProperties.getCode().getImage().getHeight());
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
-		Random random = new Random();
+        Graphics g = image.getGraphics();
 
-		g.setColor(getRandColor(200, 250));
-		g.fillRect(0, 0, width, height);
-		g.setFont(new Font("Times New Roman", Font.ITALIC, 20));
-		g.setColor(getRandColor(160, 200));
-		for (int i = 0; i < 155; i++) {
-			int x = random.nextInt(width);
-			int y = random.nextInt(height);
-			int xl = random.nextInt(12);
-			int yl = random.nextInt(12);
-			g.drawLine(x, y, x + xl, y + yl);
-		}
+        Random random = new Random();
 
-		String sRand = "";
-		for (int i = 0; i < securityProperties.getCode().getImage().getLength(); i++) {
-			String rand = String.valueOf(random.nextInt(10));
-			sRand += rand;
-			g.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));
-			g.drawString(rand, 13 * i + 6, 16);
-		}
+        g.setColor(getRandColor(200, 250));
+        g.fillRect(0, 0, width, height);
+        g.setFont(new Font("Times New Roman", Font.ITALIC, 20));
+        g.setColor(getRandColor(160, 200));
+        for (int i = 0; i < 155; i++){
+            int x = random.nextInt(width);
+            int y = random.nextInt(height);
+            int xl = random.nextInt(12);
+            int yl = random.nextInt(12);
+            g.drawLine(x, y, x + xl, y + yl);
+        }
 
-		g.dispose();
+        String sRand = "";
+        for (int i = 0; i < securityProperties.getCode().getImage().getLength(); i++){
+            String rand = String.valueOf(random.nextInt(10));
+            sRand += rand;
+            g.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));
+            g.drawString(rand, 13 * i + 6, 16);
+        }
 
-		return new ImageCode(image, sRand, securityProperties.getCode().getImage().getExpireIn());
-	}
-	
-	/**
-	 * 生成随机背景条纹
-	 * 
-	 * @param fc
-	 * @param bc
-	 * @return
-	 */
-	private Color getRandColor(int fc, int bc) {
-		Random random = new Random();
-		if (fc > 255) {
-			fc = 255;
-		}
-		if (bc > 255) {
-			bc = 255;
-		}
-		int r = fc + random.nextInt(bc - fc);
-		int g = fc + random.nextInt(bc - fc);
-		int b = fc + random.nextInt(bc - fc);
-		return new Color(r, g, b);
-	}
+        g.dispose();
 
-	public SecurityProperties getSecurityProperties() {
-		return securityProperties;
-	}
+        return new ImageCode(image, sRand, securityProperties.getCode().getImage().getExpireIn());
+    }
 
-	public void setSecurityProperties(SecurityProperties securityProperties) {
-		this.securityProperties = securityProperties;
-	}
-	
-	
+    /**
+     * 生成随机背景条纹
+     * 
+     * @param fc
+     * @param bc
+     * @return
+     */
+    private Color getRandColor(int fc,int bc){
+        Random random = new Random();
+        if (fc > 255){
+            fc = 255;
+        }
+        if (bc > 255){
+            bc = 255;
+        }
+        int r = fc + random.nextInt(bc - fc);
+        int g = fc + random.nextInt(bc - fc);
+        int b = fc + random.nextInt(bc - fc);
+        return new Color(r, g, b);
+    }
+
+    public SecurityProperties getSecurityProperties(){
+        return securityProperties;
+    }
+
+    public void setSecurityProperties(SecurityProperties securityProperties){
+        this.securityProperties = securityProperties;
+    }
 
 }

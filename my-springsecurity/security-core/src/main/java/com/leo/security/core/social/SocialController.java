@@ -5,7 +5,7 @@ package com.leo.security.core.social;
 
 import org.springframework.social.connect.Connection;
 
-import com.leo.security.core.support.SocialUserInfo;
+import com.leo.security.core.social.support.SocialUserInfo;
 
 /**
  *

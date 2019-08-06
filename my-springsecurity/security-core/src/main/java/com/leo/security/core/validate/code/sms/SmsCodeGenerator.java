@@ -13,7 +13,7 @@ import com.leo.security.core.validate.code.ValidateCode;
 import com.leo.security.core.validate.code.ValidateCodeGenerator;
 
 /**
- * @author zhailiang
+ * 短信验证码生成器
  *
  */
 @Component("smsValidateCodeGenerator")

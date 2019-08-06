@@ -26,7 +26,8 @@ import com.leo.security.core.properties.SecurityConstants;
 import com.leo.security.core.properties.SecurityProperties;
 
 /**
- * @author zhailiang
+ * 校验验证码的过滤器
+ * 
  * 实现InitializingBean，目的是在别的属性都装载完毕之后执行afterPropertiesSet方法，自定义属性配置
  * 本例中想把配置的以逗号隔开的配置项，转化成Map，则可以这么做
  */
@@ -64,7 +65,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 	public void afterPropertiesSet() throws ServletException {
 		super.afterPropertiesSet();
 
-		urlMap.put(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM, ValidateCodeType.IMAGE);
+		urlMap.put(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_FORM, ValidateCodeType.IMAGE);
 		addUrlToMap(securityProperties.getCode().getImage().getUrl(), ValidateCodeType.IMAGE);
 
 		urlMap.put(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE, ValidateCodeType.SMS);

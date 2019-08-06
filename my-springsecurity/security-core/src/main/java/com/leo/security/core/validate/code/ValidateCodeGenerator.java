@@ -6,11 +6,16 @@ package com.leo.security.core.validate.code;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**
- * @author zhailiang
- *
+ * 校验码生成器
  */
-public interface ValidateCodeGenerator {
+public interface ValidateCodeGenerator{
 
-	ValidateCode generate(ServletWebRequest request);
-	
+    /**
+     * 生成校验码
+     * 
+     * @param request
+     * @return
+     */
+    ValidateCode generate(ServletWebRequest request);
+
 }

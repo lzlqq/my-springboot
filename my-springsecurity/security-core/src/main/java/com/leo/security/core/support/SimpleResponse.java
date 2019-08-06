@@ -4,23 +4,23 @@
 package com.leo.security.core.support;
 
 /**
- * @author zhailiang
+ * 简单响应的封装类
  *
  */
-public class SimpleResponse {
-	
-	public SimpleResponse(Object content){
-		this.content = content;
-	}
-	
-	private Object content;
+public class SimpleResponse{
 
-	public Object getContent() {
-		return content;
-	}
+    private Object content;
 
-	public void setContent(Object content) {
-		this.content = content;
-	}
-	
+    public SimpleResponse(Object content){
+        this.content = content;
+    }
+
+    public Object getContent(){
+        return content;
+    }
+
+    public void setContent(Object content){
+        this.content = content;
+    }
+
 }

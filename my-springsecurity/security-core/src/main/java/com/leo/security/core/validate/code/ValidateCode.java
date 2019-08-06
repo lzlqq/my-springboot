@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 
 /**
- * @author zhailiang
+ * 验证码信息封装类
  *
  */
 public class ValidateCode implements Serializable{

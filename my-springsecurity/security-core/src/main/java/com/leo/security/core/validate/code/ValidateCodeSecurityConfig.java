@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.preauth.AbstractPreAuthen
 import org.springframework.stereotype.Component;
 
 /**
- * @author zhailiang
+ * 校验码相关安全配置
  *
  */
 @Component("validateCodeSecurityConfig")
