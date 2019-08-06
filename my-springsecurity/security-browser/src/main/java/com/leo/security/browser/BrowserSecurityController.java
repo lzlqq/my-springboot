@@ -27,18 +27,19 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 
+import com.leo.security.core.properties.SecurityConstants;
 import com.leo.security.core.properties.SecurityProperties;
+import com.leo.security.core.social.SocialController;
+import com.leo.security.core.social.support.SocialUserInfo;
 import com.leo.security.core.support.SimpleResponse;
-import com.leo.security.core.support.SocialUserInfo;
 
 /**
  * 浏览器环境下与安全相关的服务
  * 
- * @author zhailiang
  *
  */
 @RestController
-public class BrowserSecurityController{
+public class BrowserSecurityController extends SocialController{
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -60,8 +61,7 @@ public class BrowserSecurityController{
      * @return
      * @throws IOException
      */
-    //	@RequestMapping(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
-    @RequestMapping("/authentication/require")
+    @RequestMapping(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     public SimpleResponse requireAuthentication(HttpServletRequest request,HttpServletResponse response) throws IOException{
 
@@ -71,8 +71,7 @@ public class BrowserSecurityController{
             String targetUrl = savedRequest.getRedirectUrl();
             logger.info("引发跳转的请求是:" + targetUrl);
             if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")){
-                redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getLoginPage());
-                //redirectStrategy.sendRedirect(request, response, "");
+                redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getSignInPage());
             }
         }
 
@@ -80,27 +79,25 @@ public class BrowserSecurityController{
     }
 
     /**
+     * 用户第一次社交登录时，会引导用户进行用户注册或绑定，此服务用于在注册或绑定页面获取社交网站用户信息
+     * 
+     * 
      * 1.这个请求是在{@link SocialAuthenticationFilter}，跑出异常之后，去注册页面时调用的，
      * 在catch里面将从服务商获取的用户信息放进Session的，然后再冲Session中拿出来给前端用户使用
      * 
      * @param request
      * @return
      */
-    @GetMapping("/social/user")
-    public SocialUserInfo getSocialUserInfo(HttpServletRequest request){
-        SocialUserInfo userInfo = new SocialUserInfo();
+    @GetMapping(SecurityConstants.DEFAULT_SOCIAL_USER_INFO_URL)
+    public SocialUserInfo getSocialUserInfo(HttpServletRequest request) {
         Connection<?> connection = providerSignInUtils.getConnectionFromSession(new ServletWebRequest(request));
-        userInfo.setProviderId(connection.getKey().getProviderId());
-        userInfo.setProviderUserId(connection.getKey().getProviderUserId());
-        userInfo.setNickname(connection.getDisplayName());
-        userInfo.setHeadimg(connection.getImageUrl());
-        return userInfo;
+        return buildSocialUserInfo(connection);
     }
 
-    @RequestMapping("/session/invalid")
-    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-    public SimpleResponse sessionInvalid(){
-        return new SimpleResponse("session失效");
-    }
+    //    @RequestMapping("/session/invalid")
+    //    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    //    public SimpleResponse sessionInvalid(){
+    //        return new SimpleResponse("session失效");
+    //    }
 
 }
