@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import com.leo.security.app.social.impl.AppSingUpUtils;
+import com.leo.security.app.social.AppSingUpUtils;
 import com.leo.security.core.properties.SecurityConstants;
 import com.leo.security.core.social.SocialController;
-import com.leo.security.core.support.SocialUserInfo;
+import com.leo.security.core.social.support.SocialUserInfo;
 
 /**
  *

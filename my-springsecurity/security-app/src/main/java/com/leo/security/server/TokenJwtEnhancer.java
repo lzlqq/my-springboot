@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.leo.security.app;
+package com.leo.security.server;
 
 import java.util.HashMap;
 import java.util.Map;

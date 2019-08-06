@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.leo.security.app;
+package com.leo.security.server;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +13,10 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.social.security.SpringSocialConfigurer;
 
 import com.leo.security.app.authentication.openid.OpenIdAuthenticationSecurityConfig;
+import com.leo.security.core.authentication.FormAuthenticationConfig;
 import com.leo.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.leo.security.core.authorize.AuthorizeConfigManager;
 import com.leo.security.core.properties.SecurityConstants;
-import com.leo.security.core.properties.SecurityProperties;
 import com.leo.security.core.validate.code.ValidateCodeSecurityConfig;
 
 /**
@@ -51,42 +51,15 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 	
 	@Autowired
 	private AuthorizeConfigManager authorizeConfigManager;
-//	
-//	@Autowired
-//	private FormAuthenticationConfig formAuthenticationConfig;
+	
 	@Autowired
-	private SecurityProperties securityProperties;
-//	
-//	@Override
-//	public void configure(HttpSecurity http) throws Exception {
-//		
-//		formAuthenticationConfig.configure(http);
-//		
-//		http.apply(validateCodeSecurityConfig)
-//				.and()
-//			.apply(smsCodeAuthenticationSecurityConfig)
-//				.and()
-//			.apply(imoocSocialSecurityConfig)
-//				.and()
-//			.apply(openIdAuthenticationSecurityConfig)
-//				.and()
-//			.csrf().disable();
-//		
-//		authorizeConfigManager.config(http.authorizeRequests());
-//	}
+	private FormAuthenticationConfig formAuthenticationConfig;
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.formLogin()
-		.loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
-		.loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
-		.successHandler(imoocAuthenticationSuccessHandler)
-		.failureHandler(imoocAuthenticationFailureHandler);
 		
-		/**
-		 * 验证码的过滤器运行在认证过滤器之前，因为是先验证验证码，对不对，再来验证用户所输入的用户名密码是否正确，符合正常逻辑
-		 * 注意这两个过滤器配置的顺序
-		 */
+		formAuthenticationConfig.configure(http);
+		
 		http.apply(validateCodeSecurityConfig)
 				.and()
 			.apply(smsCodeAuthenticationSecurityConfig)
@@ -95,6 +68,31 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.and()
 			.apply(openIdAuthenticationSecurityConfig)
 				.and()
+			.csrf().disable();
+		
+		authorizeConfigManager.config(http.authorizeRequests());
+	}
+	
+//	@Override
+//	public void configure(HttpSecurity http) throws Exception {
+//		http.formLogin()
+//		.loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
+//		.loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
+//		.successHandler(imoocAuthenticationSuccessHandler)
+//		.failureHandler(imoocAuthenticationFailureHandler);
+//		
+//		/**
+//		 * 验证码的过滤器运行在认证过滤器之前，因为是先验证验证码，对不对，再来验证用户所输入的用户名密码是否正确，符合正常逻辑
+//		 * 注意这两个过滤器配置的顺序
+//		 */
+//		http.apply(validateCodeSecurityConfig)
+//				.and()
+//			.apply(smsCodeAuthenticationSecurityConfig)
+//				.and()
+//			.apply(imoocSocialSecurityConfig)
+//				.and()
+//			.apply(openIdAuthenticationSecurityConfig)
+//				.and()
 //			.authorizeRequests()
 //				.antMatchers(
 //					SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
@@ -110,8 +108,8 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 //				.anyRequest()
 //				.authenticated()
 //				.and()
-			.csrf().disable();
-		authorizeConfigManager.config(http.authorizeRequests());
-	}
+//			.csrf().disable();
+//		authorizeConfigManager.config(http.authorizeRequests());
+//	}
 	
 }

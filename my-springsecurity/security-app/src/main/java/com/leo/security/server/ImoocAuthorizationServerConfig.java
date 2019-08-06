@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.leo.security.app;
+package com.leo.security.server;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -27,7 +28,6 @@ import com.leo.security.core.properties.SecurityProperties;
 /**
  * 认证服务器配置
  * 
- * @author zhailiang
  *
  */
 @Configuration
@@ -80,13 +80,13 @@ public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigure
 		}
 
 	}
-//
-//	/**
-//	 * tokenKey的访问权限表达式配置
-//	 */
-//	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-//		security.tokenKeyAccess("permitAll()");
-//	}
+
+	/**
+	 * tokenKey的访问权限表达式配置
+	 */
+	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+		security.tokenKeyAccess("permitAll()");
+	}
 
 	/**
 	 * 客户端配置
@@ -108,14 +108,5 @@ public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigure
 		}
 	}
 	
-//	@Override
-//	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-//		clients.inMemory().withClient("imooc")
-//		.secret("imoocsecret")
-//		.authorizedGrantTypes("refresh_token", "authorization_code", "password") // 客户端支持的授权模式
-//		.accessTokenValiditySeconds(7200) // 令牌的有效时间
-//		.refreshTokenValiditySeconds(2592000)
-//		.scopes("all","read","write");
-//	}
 
 }

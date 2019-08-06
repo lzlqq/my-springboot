@@ -1,4 +1,4 @@
-package com.leo.security.app.social.impl;
+package com.leo.security.app.social;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;

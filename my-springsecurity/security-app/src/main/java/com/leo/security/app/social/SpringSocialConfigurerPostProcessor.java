@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.leo.security.app.social.impl;
+package com.leo.security.app.social;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeansException;

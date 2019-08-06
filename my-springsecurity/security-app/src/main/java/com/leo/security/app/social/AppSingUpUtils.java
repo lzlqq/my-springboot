@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.leo.security.app.social.impl;
+package com.leo.security.app.social;
 
 import java.util.concurrent.TimeUnit;
 
