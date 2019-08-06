@@ -14,34 +14,41 @@ import com.leo.security.core.social.qq.api.QQUserInfo;
  * @author zhailiang
  *
  */
-public class QQAdapter implements ApiAdapter<QQ> {
+public class QQAdapter implements ApiAdapter<QQ>{
 
-	@Override
-	public boolean test(QQ api) {
-		return true;
-	}
-	/**
-	 * 将从服务提供商的个性化信息，设置到标准结构上
-	 */
-	@Override
-	public void setConnectionValues(QQ api, ConnectionValues values) {
-		QQUserInfo userInfo = api.getUserInfo();
-		
-		values.setDisplayName(userInfo.getNickname());
-		values.setImageUrl(userInfo.getFigureurl_qq_1());//简单头像
-		values.setProfileUrl(null);//比如主页url
-		values.setProviderUserId(userInfo.getOpenId());//服务提供商的用户id，用户唯一标识
-	}
+    @Override
+    public boolean test(QQ api){
+        // 测试当前API是否空，也就是QQ服务是够可用，返回true，不去测试是否可用，表示永远可用
+        return true;
+    }
 
-	@Override
-	public UserProfile fetchUserProfile(QQ api) {
-		// 也是走api获取个人详细信息的接口，绑定解绑可以用到
-		return null;
-	}
+    /**
+     * 将从服务提供商的个性化信息，设置到标准结构上
+     * 将个性化的数据转换为标准的数据结构
+     */
+    @Override
+    public void setConnectionValues(QQ api,ConnectionValues values){
+        // 获取用户信息
+        QQUserInfo userInfo = api.getUserInfo();
+        // 显示的用户名字
+        values.setDisplayName(userInfo.getNickname());
+        // 用户头像,简单头像
+        values.setImageUrl(userInfo.getFigureurl_qq_1());
+        // 个人主页，qq没有,比如主页url
+        values.setProfileUrl(null);
+        // 服务提供商的用户id，即openId，用户唯一标识
+        values.setProviderUserId(userInfo.getOpenId());
+    }
 
-	@Override
-	public void updateStatus(QQ api, String message) {
-		//do noting 有些第三方应用有，比如微博可以发个消息更新个人主页
-	}
+    @Override
+    public UserProfile fetchUserProfile(QQ api){
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void updateStatus(QQ api,String message){
+        //do noting
+    }
 
 }

@@ -14,7 +14,7 @@ import com.leo.security.core.properties.SecurityProperties;
 import com.leo.security.core.social.qq.connect.QQConnectionFactory;
 
 /**
- * @author zhailiang
+ * 只有在application.properties中配置了appId，这个类中的配置才会生效
  *
  */
 @Configuration

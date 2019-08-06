@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.leo.security.core.social;
+package com.leo.security.core.social.view;
 
 import java.util.HashMap;
 import java.util.List;

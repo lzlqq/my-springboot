@@ -19,6 +19,8 @@ import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 import com.leo.security.core.properties.SecurityProperties;
+import com.leo.security.core.social.support.ImoocSpringSocialConfigurer;
+import com.leo.security.core.social.support.SocialAuthenticationFilterPostProcessor;
 
 /**
  * 社交登录配置主类

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 import com.leo.security.core.properties.SecurityConstants;
-import com.leo.security.core.social.ImoocSpringSocialConfigurer;
+import com.leo.security.core.social.support.ImoocSpringSocialConfigurer;
 
 /**
  * 在App初始化完成之后修改掉signup的路径
