@@ -8,8 +8,6 @@
 	</parent>
 	<artifactId>security-authorize</artifactId>
 
-
-
 	<dependencies>
 		<dependency>
 			<groupId>com.leo.springboot</groupId>
